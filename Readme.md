@@ -18,6 +18,30 @@
 
 ### V1 
 
+```C
+void convolution(int dim, pixel *src, pixel *ker, unsigned *dst)
+{
+
+    int i, j, k, l;
+    for (i = 0; i < dim - 8 + 1; i++)
+        for (j = 0; j < dim - 8 + 1; j++)
+        {
+            int sum = 0;
+            for (k = 0; k < 8; k++)
+                for (l = 0; l < 8; l++)
+                {
+                    int srcPixel = RIDX((i + k), (j + l), dim);
+                    int kerPixel = RIDX(k, l, 8);
+                    sum += src[srcPixel].red * ker[kerPixel].red;
+                    sum += src[srcPixel].green * ker[kerPixel].green;
+                    sum += src[srcPixel].blue * ker[kerPixel].blue;
+                }
+            dst[RIDX(i, j, dim)] = sum;
+        }
+}
+
+```
+
 ### V2
 
 
