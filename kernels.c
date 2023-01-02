@@ -411,6 +411,73 @@ void average_pooling(int dim, pixel *src, pixel *dst)
     naive_average_pooling(dim, src, dst);
 }
 
+char avg_pool_mahdi_descr[] = "avg pooling function mahdi";
+void avg_pool_mahdi(int dim, pixel *src, pixel *dst)
+{
+    int i, j, k, l;
+    int limit = dim / 2;
+
+    for (i = 0; i < limit; i++)
+        for (j = 0; j < limit; j++)
+        {
+            pixel * dstPixel = dst + RIDX(i, j, limit);
+            // pixel * srcPixel = src[RIDX(i * 2 + k, j * 2 + l, dim)];
+            pixel * srcPixel = src + RIDX(i * 2, j * 2, dim);
+
+            // 0,0
+            int sumR0 = srcPixel->red;
+            int sumG0 = srcPixel->green;
+            int sumB0 = srcPixel->blue;
+
+            // 0,1
+            srcPixel += 1;
+
+            int sumR1 = srcPixel->red;
+            int sumG1 = srcPixel->green;
+            int sumB1 = srcPixel->blue;
+
+            dstPixel->red = sumR0 + sumR1;
+            dstPixel->green = sumG0 + sumG1;
+            dstPixel->blue = sumB0 + sumB1;
+
+            // 1,0
+            srcPixel += dim;
+
+            int sumR2 = srcPixel->red;
+            int sumG2 = srcPixel->green;
+            int sumB2 = srcPixel->blue;
+
+            // 1,1
+            srcPixel += 1;
+
+            int sumR3 = srcPixel->red;
+            int sumG3 = srcPixel->green;
+            int sumB3 = srcPixel->blue;
+
+            dstPixel->red = sumR2 + sumR3;
+            dstPixel->green = sumG2 + sumG3;
+            dstPixel->blue = sumB2 + sumB3;
+
+            // srcPixel += 1;
+            // dstPixel->red = 0;
+            // dstPixel->green = 0;
+            // dstPixel->blue = 0;
+
+            // for (k = 0; k < 2; k++)
+            // {
+            //     for (l = 0; l < 2; l++)
+            //     {
+            //         dstPixel->red += src[RIDX(i * 2 + k, j * 2 + l, dim)].red;
+            //         dstPixel->green += src[RIDX(i * 2 + k, j * 2 + l, dim)].green;
+            //         dstPixel->blue += src[RIDX(i * 2 + k, j * 2 + l, dim)].blue;
+            //     }
+            // }
+            dstPixel->red >>= 2;
+            dstPixel->green >>= 2;
+            dstPixel->blue >>= 2;
+        }
+}
+
 /******************************************************************************
  * register_average_pooling_functions - Register all of your different versions
  *     of the average pooling  with the driver by calling the
@@ -422,6 +489,7 @@ void average_pooling(int dim, pixel *src, pixel *dst)
 void register_average_pooling_functions()
 {
     add_average_pooling_function(&naive_average_pooling, naive_average_pooling_descr);
-    add_average_pooling_function(&average_pooling, average_pooling_descr);
+    // add_average_pooling_function(&average_pooling, average_pooling_descr);
+    add_average_pooling_function(&avg_pool_mahdi, avg_pool_mahdi_descr);
     /* ... Register additional test functions here */
 }
