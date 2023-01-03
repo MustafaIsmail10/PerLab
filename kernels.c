@@ -150,143 +150,608 @@ void convolutionMustafaV1(int dim, pixel *src, pixel *ker, unsigned *dst)
 
 char convolution_mahdi_descr[] = "CONVOLUTION: MAHDI v1";
 void convolution_mahdi(int dim, pixel *src, pixel *ker, unsigned *dst) {
-    int i,j,res, res2, res3,limit = dim - 7;
-    // int kernValues[64];
-    pixel *tmpSrc, *rwSrc, *rwSrc2;
-    unsigned *rwDst;
-    // kernValues = ker;
+    int i,j;
+    int limit = dim - 7;
+    pixel *src_ptr;
+    pixel *loop_ptr, *loop_ptr1;
+    unsigned *dst_pointer;
+    int res, res2, res3;
     for(i = 0; i < limit; i++) 
     {
-        tmpSrc = src; 
-        rwDst = dst;
+        src_ptr = src; 
+        dst_pointer = dst;
         for(j = 0; j < limit; j++) 
         {
-            rwSrc = tmpSrc;
-            // res = (rwSrc[0].red * kernValues[0].red);
-            // res += (rwSrc[0].green * kernValues[0].green);
-            //res += (rwSrc[0].blue * kernValues[0].blue);
-            // res = (rwSrc[0].red * kernValues[0].red);
-            rwSrc2 = tmpSrc + dim;
+            loop_ptr = src_ptr;
+            loop_ptr1 = src_ptr + dim;
 
-            res = (rwSrc[0].red * ker[0].red) + (rwSrc[1].red * ker[1].red) + (rwSrc[2].red * ker[2].red) +
-                   (rwSrc[3].red * ker[3].red) + (rwSrc[4].red * ker[4].red) + (rwSrc[5].red * ker[5].red) +
-                   (rwSrc[6].red * ker[6].red) + (rwSrc[7].red * ker[7].red);
+            res = (loop_ptr[0].red * ker[0].red) + (loop_ptr[1].red * ker[1].red) + (loop_ptr[2].red * ker[2].red) +
+                   (loop_ptr[3].red * ker[3].red) + (loop_ptr[4].red * ker[4].red) + (loop_ptr[5].red * ker[5].red) +
+                   (loop_ptr[6].red * ker[6].red) + (loop_ptr[7].red * ker[7].red);
 
-            res2 = (rwSrc[0].green * ker[0].green) + (rwSrc[1].green * ker[1].green) + (rwSrc[2].green * ker[2].green) +
-                   (rwSrc[3].green * ker[3].green) + (rwSrc[4].green * ker[4].green) + (rwSrc[5].green * ker[5].green) +
-                   (rwSrc[6].green * ker[6].green) + (rwSrc[7].green * ker[7].green);
+            res2 = (loop_ptr[0].green * ker[0].green) + (loop_ptr[1].green * ker[1].green) + (loop_ptr[2].green * ker[2].green) +
+                   (loop_ptr[3].green * ker[3].green) + (loop_ptr[4].green * ker[4].green) + (loop_ptr[5].green * ker[5].green) +
+                   (loop_ptr[6].green * ker[6].green) + (loop_ptr[7].green * ker[7].green);
 
-            res3 = (rwSrc[0].blue * ker[0].blue) + (rwSrc[1].blue * ker[1].blue) + (rwSrc[2].blue * ker[2].blue) +
-                   (rwSrc[3].blue * ker[3].blue) + (rwSrc[4].blue * ker[4].blue) + (rwSrc[5].blue * ker[5].blue) +
-                   (rwSrc[6].blue * ker[6].blue) + (rwSrc[7].blue * ker[7].blue);
+            res3 = (loop_ptr[0].blue * ker[0].blue) + (loop_ptr[1].blue * ker[1].blue) + (loop_ptr[2].blue * ker[2].blue) +
+                   (loop_ptr[3].blue * ker[3].blue) + (loop_ptr[4].blue * ker[4].blue) + (loop_ptr[5].blue * ker[5].blue) +
+                   (loop_ptr[6].blue * ker[6].blue) + (loop_ptr[7].blue * ker[7].blue);
             // Even
-            rwSrc += (dim << 1);
+            loop_ptr += (dim << 1);
 
-            res += (rwSrc2[0].red * ker[8].red) + (rwSrc2[1].red * ker[9].red) + (rwSrc2[2].red * ker[10].red) +
-                   (rwSrc2[3].red * ker[11].red) + (rwSrc2[4].red * ker[12].red) + (rwSrc2[5].red * ker[13].red) +
-                   (rwSrc2[6].red * ker[14].red) + (rwSrc2[7].red * ker[15].red);
+            res += (loop_ptr1[0].red * ker[8].red) + (loop_ptr1[1].red * ker[9].red) + (loop_ptr1[2].red * ker[10].red) +
+                   (loop_ptr1[3].red * ker[11].red) + (loop_ptr1[4].red * ker[12].red) + (loop_ptr1[5].red * ker[13].red) +
+                   (loop_ptr1[6].red * ker[14].red) + (loop_ptr1[7].red * ker[15].red);
 
-            res2 += (rwSrc2[0].green * ker[8].green) + (rwSrc2[1].green * ker[9].green) + (rwSrc2[2].green * ker[10].green) +
-                   (rwSrc2[3].green * ker[11].green) + (rwSrc2[4].green * ker[12].green) + (rwSrc2[5].green * ker[13].green) +
-                   (rwSrc2[6].green * ker[14].green) + (rwSrc2[7].green * ker[15].green);
+            res2 += (loop_ptr1[0].green * ker[8].green) + (loop_ptr1[1].green * ker[9].green) + (loop_ptr1[2].green * ker[10].green) +
+                   (loop_ptr1[3].green * ker[11].green) + (loop_ptr1[4].green * ker[12].green) + (loop_ptr1[5].green * ker[13].green) +
+                   (loop_ptr1[6].green * ker[14].green) + (loop_ptr1[7].green * ker[15].green);
 
-            res3 += (rwSrc2[0].blue * ker[8].blue) + (rwSrc2[1].blue * ker[9].blue) + (rwSrc2[2].blue * ker[10].blue) +
-                   (rwSrc2[3].blue * ker[11].blue) + (rwSrc2[4].blue * ker[12].blue) + (rwSrc2[5].blue * ker[13].blue) +
-                   (rwSrc2[6].blue * ker[14].blue) + (rwSrc2[7].blue * ker[15].blue);
+            res3 += (loop_ptr1[0].blue * ker[8].blue) + (loop_ptr1[1].blue * ker[9].blue) + (loop_ptr1[2].blue * ker[10].blue) +
+                   (loop_ptr1[3].blue * ker[11].blue) + (loop_ptr1[4].blue * ker[12].blue) + (loop_ptr1[5].blue * ker[13].blue) +
+                   (loop_ptr1[6].blue * ker[14].blue) + (loop_ptr1[7].blue * ker[15].blue);
             // Odd
-            rwSrc2 += (dim << 1);
+            loop_ptr1 += (dim << 1);
 
-            res += (rwSrc[0].red * ker[16].red) + (rwSrc[1].red * ker[17].red) + (rwSrc[2].red * ker[18].red) +
-                   (rwSrc[3].red * ker[19].red) + (rwSrc[4].red * ker[20].red) + (rwSrc[5].red * ker[21].red) +
-                   (rwSrc[6].red * ker[22].red) + (rwSrc[7].red * ker[23].red);
+            res += (loop_ptr[0].red * ker[16].red) + (loop_ptr[1].red * ker[17].red) + (loop_ptr[2].red * ker[18].red) +
+                   (loop_ptr[3].red * ker[19].red) + (loop_ptr[4].red * ker[20].red) + (loop_ptr[5].red * ker[21].red) +
+                   (loop_ptr[6].red * ker[22].red) + (loop_ptr[7].red * ker[23].red);
 
-            res2 += (rwSrc[0].green * ker[16].green) + (rwSrc[1].green * ker[17].green) + (rwSrc[2].green * ker[18].green) +
-                   (rwSrc[3].green * ker[19].green) + (rwSrc[4].green * ker[20].green) + (rwSrc[5].green * ker[21].green) +
-                   (rwSrc[6].green * ker[22].green) + (rwSrc[7].green * ker[23].green);
+            res2 += (loop_ptr[0].green * ker[16].green) + (loop_ptr[1].green * ker[17].green) + (loop_ptr[2].green * ker[18].green) +
+                   (loop_ptr[3].green * ker[19].green) + (loop_ptr[4].green * ker[20].green) + (loop_ptr[5].green * ker[21].green) +
+                   (loop_ptr[6].green * ker[22].green) + (loop_ptr[7].green * ker[23].green);
 
-            res3 += (rwSrc[0].blue * ker[16].blue) + (rwSrc[1].blue * ker[17].blue) + (rwSrc[2].blue * ker[18].blue) +
-                   (rwSrc[3].blue * ker[19].blue) + (rwSrc[4].blue * ker[20].blue) + (rwSrc[5].blue * ker[21].blue) +
-                   (rwSrc[6].blue * ker[22].blue) + (rwSrc[7].blue * ker[23].blue);
+            res3 += (loop_ptr[0].blue * ker[16].blue) + (loop_ptr[1].blue * ker[17].blue) + (loop_ptr[2].blue * ker[18].blue) +
+                   (loop_ptr[3].blue * ker[19].blue) + (loop_ptr[4].blue * ker[20].blue) + (loop_ptr[5].blue * ker[21].blue) +
+                   (loop_ptr[6].blue * ker[22].blue) + (loop_ptr[7].blue * ker[23].blue);
             // Even
-            rwSrc += (dim << 1);
+            loop_ptr += (dim << 1);
 
-            res += (rwSrc2[0].red * ker[24].red) + (rwSrc2[1].red * ker[25].red) + (rwSrc2[2].red * ker[26].red) +
-                   (rwSrc2[3].red * ker[27].red) + (rwSrc2[4].red * ker[28].red) + (rwSrc2[5].red * ker[29].red) +
-                   (rwSrc2[6].red * ker[30].red) + (rwSrc2[7].red * ker[31].red);
+            res += (loop_ptr1[0].red * ker[24].red) + (loop_ptr1[1].red * ker[25].red) + (loop_ptr1[2].red * ker[26].red) +
+                   (loop_ptr1[3].red * ker[27].red) + (loop_ptr1[4].red * ker[28].red) + (loop_ptr1[5].red * ker[29].red) +
+                   (loop_ptr1[6].red * ker[30].red) + (loop_ptr1[7].red * ker[31].red);
 
-            res2 += (rwSrc2[0].green * ker[24].green) + (rwSrc2[1].green * ker[25].green) + (rwSrc2[2].green * ker[26].green) +
-                   (rwSrc2[3].green * ker[27].green) + (rwSrc2[4].green * ker[28].green) + (rwSrc2[5].green * ker[29].green) +
-                   (rwSrc2[6].green * ker[30].green) + (rwSrc2[7].green * ker[31].green);
+            res2 += (loop_ptr1[0].green * ker[24].green) + (loop_ptr1[1].green * ker[25].green) + (loop_ptr1[2].green * ker[26].green) +
+                   (loop_ptr1[3].green * ker[27].green) + (loop_ptr1[4].green * ker[28].green) + (loop_ptr1[5].green * ker[29].green) +
+                   (loop_ptr1[6].green * ker[30].green) + (loop_ptr1[7].green * ker[31].green);
 
-            res3 += (rwSrc2[0].blue * ker[24].blue) + (rwSrc2[1].blue * ker[25].blue) + (rwSrc2[2].blue * ker[26].blue) +
-                   (rwSrc2[3].blue * ker[27].blue) + (rwSrc2[4].blue * ker[28].blue) + (rwSrc2[5].blue * ker[29].blue) +
-                   (rwSrc2[6].blue * ker[30].blue) + (rwSrc2[7].blue * ker[31].blue);
+            res3 += (loop_ptr1[0].blue * ker[24].blue) + (loop_ptr1[1].blue * ker[25].blue) + (loop_ptr1[2].blue * ker[26].blue) +
+                   (loop_ptr1[3].blue * ker[27].blue) + (loop_ptr1[4].blue * ker[28].blue) + (loop_ptr1[5].blue * ker[29].blue) +
+                   (loop_ptr1[6].blue * ker[30].blue) + (loop_ptr1[7].blue * ker[31].blue);
             // Odd
-            rwSrc2 += (dim << 1);
+            loop_ptr1 += (dim << 1);
 
-            res += (rwSrc[0].red * ker[32].red) + (rwSrc[1].red * ker[33].red) + (rwSrc[2].red * ker[34].red) +
-                   (rwSrc[3].red * ker[35].red) + (rwSrc[4].red * ker[36].red) + (rwSrc[5].red * ker[37].red) +
-                   (rwSrc[6].red * ker[38].red) + (rwSrc[7].red * ker[39].red);
+            res += (loop_ptr[0].red * ker[32].red) + (loop_ptr[1].red * ker[33].red) + (loop_ptr[2].red * ker[34].red) +
+                   (loop_ptr[3].red * ker[35].red) + (loop_ptr[4].red * ker[36].red) + (loop_ptr[5].red * ker[37].red) +
+                   (loop_ptr[6].red * ker[38].red) + (loop_ptr[7].red * ker[39].red);
 
-            res2 += (rwSrc[0].green * ker[32].green) + (rwSrc[1].green * ker[33].green) + (rwSrc[2].green * ker[34].green) +
-                   (rwSrc[3].green * ker[35].green) + (rwSrc[4].green * ker[36].green) + (rwSrc[5].green * ker[37].green) +
-                   (rwSrc[6].green * ker[38].green) + (rwSrc[7].green * ker[39].green);
+            res2 += (loop_ptr[0].green * ker[32].green) + (loop_ptr[1].green * ker[33].green) + (loop_ptr[2].green * ker[34].green) +
+                   (loop_ptr[3].green * ker[35].green) + (loop_ptr[4].green * ker[36].green) + (loop_ptr[5].green * ker[37].green) +
+                   (loop_ptr[6].green * ker[38].green) + (loop_ptr[7].green * ker[39].green);
 
-            res3 += (rwSrc[0].blue * ker[32].blue) + (rwSrc[1].blue * ker[33].blue) + (rwSrc[2].blue * ker[34].blue) +
-                   (rwSrc[3].blue * ker[35].blue) + (rwSrc[4].blue * ker[36].blue) + (rwSrc[5].blue * ker[37].blue) +
-                   (rwSrc[6].blue * ker[38].blue) + (rwSrc[7].blue * ker[39].blue);
+            res3 += (loop_ptr[0].blue * ker[32].blue) + (loop_ptr[1].blue * ker[33].blue) + (loop_ptr[2].blue * ker[34].blue) +
+                   (loop_ptr[3].blue * ker[35].blue) + (loop_ptr[4].blue * ker[36].blue) + (loop_ptr[5].blue * ker[37].blue) +
+                   (loop_ptr[6].blue * ker[38].blue) + (loop_ptr[7].blue * ker[39].blue);
             // Even
-            rwSrc += (dim << 1);
+            loop_ptr += (dim << 1);
 
-            res += (rwSrc2[0].red * ker[40].red) + (rwSrc2[1].red * ker[41].red) + (rwSrc2[2].red * ker[42].red) +
-                   (rwSrc2[3].red * ker[43].red) + (rwSrc2[4].red * ker[44].red) + (rwSrc2[5].red * ker[45].red) +
-                   (rwSrc2[6].red * ker[46].red) + (rwSrc2[7].red * ker[47].red);
+            res += (loop_ptr1[0].red * ker[40].red) + (loop_ptr1[1].red * ker[41].red) + (loop_ptr1[2].red * ker[42].red) +
+                   (loop_ptr1[3].red * ker[43].red) + (loop_ptr1[4].red * ker[44].red) + (loop_ptr1[5].red * ker[45].red) +
+                   (loop_ptr1[6].red * ker[46].red) + (loop_ptr1[7].red * ker[47].red);
 
-            res2 += (rwSrc2[0].green * ker[40].green) + (rwSrc2[1].green * ker[41].green) + (rwSrc2[2].green * ker[42].green) +
-                   (rwSrc2[3].green * ker[43].green) + (rwSrc2[4].green * ker[44].green) + (rwSrc2[5].green * ker[45].green) +
-                   (rwSrc2[6].green * ker[46].green) + (rwSrc2[7].green * ker[47].green);
+            res2 += (loop_ptr1[0].green * ker[40].green) + (loop_ptr1[1].green * ker[41].green) + (loop_ptr1[2].green * ker[42].green) +
+                   (loop_ptr1[3].green * ker[43].green) + (loop_ptr1[4].green * ker[44].green) + (loop_ptr1[5].green * ker[45].green) +
+                   (loop_ptr1[6].green * ker[46].green) + (loop_ptr1[7].green * ker[47].green);
 
-            res3 += (rwSrc2[0].blue * ker[40].blue) + (rwSrc2[1].blue * ker[41].blue) + (rwSrc2[2].blue * ker[42].blue) +
-                   (rwSrc2[3].blue * ker[43].blue) + (rwSrc2[4].blue * ker[44].blue) + (rwSrc2[5].blue * ker[45].blue) +
-                   (rwSrc2[6].blue * ker[46].blue) + (rwSrc2[7].blue * ker[47].blue);
+            res3 += (loop_ptr1[0].blue * ker[40].blue) + (loop_ptr1[1].blue * ker[41].blue) + (loop_ptr1[2].blue * ker[42].blue) +
+                   (loop_ptr1[3].blue * ker[43].blue) + (loop_ptr1[4].blue * ker[44].blue) + (loop_ptr1[5].blue * ker[45].blue) +
+                   (loop_ptr1[6].blue * ker[46].blue) + (loop_ptr1[7].blue * ker[47].blue);
             // Odd
-            rwSrc2 += (dim << 1);
+            loop_ptr1 += (dim << 1);
 
-            res += (rwSrc[0].red * ker[48].red) + (rwSrc[1].red * ker[49].red) + (rwSrc[2].red * ker[50].red) +
-                   (rwSrc[3].red * ker[51].red) + (rwSrc[4].red * ker[52].red) + (rwSrc[5].red * ker[53].red) +
-                   (rwSrc[6].red * ker[54].red) + (rwSrc[7].red * ker[55].red);
+            res += (loop_ptr[0].red * ker[48].red) + (loop_ptr[1].red * ker[49].red) + (loop_ptr[2].red * ker[50].red) +
+                   (loop_ptr[3].red * ker[51].red) + (loop_ptr[4].red * ker[52].red) + (loop_ptr[5].red * ker[53].red) +
+                   (loop_ptr[6].red * ker[54].red) + (loop_ptr[7].red * ker[55].red);
 
-            res2 += (rwSrc[0].green * ker[48].green) + (rwSrc[1].green * ker[49].green) + (rwSrc[2].green * ker[50].green) +
-                   (rwSrc[3].green * ker[51].green) + (rwSrc[4].green * ker[52].green) + (rwSrc[5].green * ker[53].green) +
-                   (rwSrc[6].green * ker[54].green) + (rwSrc[7].green * ker[55].green);
+            res2 += (loop_ptr[0].green * ker[48].green) + (loop_ptr[1].green * ker[49].green) + (loop_ptr[2].green * ker[50].green) +
+                   (loop_ptr[3].green * ker[51].green) + (loop_ptr[4].green * ker[52].green) + (loop_ptr[5].green * ker[53].green) +
+                   (loop_ptr[6].green * ker[54].green) + (loop_ptr[7].green * ker[55].green);
 
-            res3 += (rwSrc[0].blue * ker[48].blue) + (rwSrc[1].blue * ker[49].blue) + (rwSrc[2].blue * ker[50].blue) +
-                   (rwSrc[3].blue * ker[51].blue) + (rwSrc[4].blue * ker[52].blue) + (rwSrc[5].blue * ker[53].blue) +
-                   (rwSrc[6].blue * ker[54].blue) + (rwSrc[7].blue * ker[55].blue);
+            res3 += (loop_ptr[0].blue * ker[48].blue) + (loop_ptr[1].blue * ker[49].blue) + (loop_ptr[2].blue * ker[50].blue) +
+                   (loop_ptr[3].blue * ker[51].blue) + (loop_ptr[4].blue * ker[52].blue) + (loop_ptr[5].blue * ker[53].blue) +
+                   (loop_ptr[6].blue * ker[54].blue) + (loop_ptr[7].blue * ker[55].blue);
             // Even
-            rwSrc += (dim << 1);
+            loop_ptr += (dim << 1);
 
-            res += (rwSrc2[0].red * ker[56].red) + (rwSrc2[1].red * ker[57].red) + (rwSrc2[2].red * ker[58].red) +
-                   (rwSrc2[3].red * ker[59].red) + (rwSrc2[4].red * ker[60].red) + (rwSrc2[5].red * ker[61].red) +
-                   (rwSrc2[6].red * ker[62].red) + (rwSrc2[7].red * ker[63].red);
+            res += (loop_ptr1[0].red * ker[56].red) + (loop_ptr1[1].red * ker[57].red) + (loop_ptr1[2].red * ker[58].red) +
+                   (loop_ptr1[3].red * ker[59].red) + (loop_ptr1[4].red * ker[60].red) + (loop_ptr1[5].red * ker[61].red) +
+                   (loop_ptr1[6].red * ker[62].red) + (loop_ptr1[7].red * ker[63].red);
 
-            res2 += (rwSrc2[0].green * ker[56].green) + (rwSrc2[1].green * ker[57].green) + (rwSrc2[2].green * ker[58].green) +
-                   (rwSrc2[3].green * ker[59].green) + (rwSrc2[4].green * ker[60].green) + (rwSrc2[5].green * ker[61].green) +
-                   (rwSrc2[6].green * ker[62].green) + (rwSrc2[7].green * ker[63].green);
+            res2 += (loop_ptr1[0].green * ker[56].green) + (loop_ptr1[1].green * ker[57].green) + (loop_ptr1[2].green * ker[58].green) +
+                   (loop_ptr1[3].green * ker[59].green) + (loop_ptr1[4].green * ker[60].green) + (loop_ptr1[5].green * ker[61].green) +
+                   (loop_ptr1[6].green * ker[62].green) + (loop_ptr1[7].green * ker[63].green);
 
-            res3 += (rwSrc2[0].blue * ker[56].blue) + (rwSrc2[1].blue * ker[57].blue) + (rwSrc2[2].blue * ker[58].blue) +
-                   (rwSrc2[3].blue * ker[59].blue) + (rwSrc2[4].blue * ker[60].blue) + (rwSrc2[5].blue * ker[61].blue) +
-                   (rwSrc2[6].blue * ker[62].blue) + (rwSrc2[7].blue * ker[63].blue);
+            res3 += (loop_ptr1[0].blue * ker[56].blue) + (loop_ptr1[1].blue * ker[57].blue) + (loop_ptr1[2].blue * ker[58].blue) +
+                   (loop_ptr1[3].blue * ker[59].blue) + (loop_ptr1[4].blue * ker[60].blue) + (loop_ptr1[5].blue * ker[61].blue) +
+                   (loop_ptr1[6].blue * ker[62].blue) + (loop_ptr1[7].blue * ker[63].blue);
 
 
-            ++tmpSrc;
-            *rwDst++ = res + res2 + res3;
+            *dst_pointer = res + res2 + res3;
+            src_ptr++;
+            dst_pointer++;
         }
         src += dim;
         dst += dim;
     }
 }
 
+char convolution_mahdi_v2_descr[] = "CONVOLUTION: MAHDIIII v2!";
+void convolution_mahdi_v2(int dim, pixel *src, pixel *ker, unsigned *dst) {
+    int i,j;
+    int limit = dim - 7;
+    pixel *src_ptr, *src_back = src;
+    pixel *loop_ptr, *loop_ptr1;
+    unsigned *dst_pointer;
+    int res;
+    unsigned * dst_back = dst;
+
+    int ker0_red, ker1_red, ker2_red, ker3_red, ker4_red, ker5_red, ker6_red, ker7_red, ker8_red;
+    int ker9_red, ker10_red, ker11_red, ker12_red, ker13_red, ker14_red, ker15_red, ker16_red;
+    int ker17_red, ker18_red, ker19_red, ker20_red, ker21_red, ker22_red, ker23_red, ker24_red;
+    int ker25_red, ker26_red, ker27_red, ker28_red, ker29_red, ker30_red, ker31_red, ker32_red;
+    int ker33_red, ker34_red, ker35_red, ker36_red, ker37_red, ker38_red, ker39_red, ker40_red;
+    int ker41_red, ker42_red, ker43_red, ker44_red, ker45_red, ker46_red, ker47_red, ker48_red;
+    int ker49_red, ker50_red, ker51_red, ker52_red, ker53_red, ker54_red, ker55_red, ker56_red;
+    int ker57_red, ker58_red, ker59_red, ker60_red, ker61_red, ker62_red, ker63_red;
+    
+    ker0_red = ker[0].red; ker1_red = ker[1].red; ker2_red = ker[2].red; ker3_red = ker[3].red; 
+    ker4_red = ker[4].red; ker5_red = ker[5].red; ker6_red = ker[6].red; ker7_red = ker[7].red;
+    ker8_red = ker[8].red; ker9_red = ker[9].red; ker10_red = ker[10].red; ker11_red = ker[11].red;
+    ker12_red = ker[12].red; ker13_red = ker[13].red; ker14_red = ker[14].red; ker15_red = ker[15].red;
+
+    ker16_red = ker[16].red; ker17_red = ker[17].red; ker18_red = ker[18].red; ker19_red = ker[19].red; 
+    ker20_red = ker[20].red; ker21_red = ker[21].red; ker22_red = ker[22].red; ker23_red = ker[23].red;
+    ker24_red = ker[24].red; ker25_red = ker[25].red; ker26_red = ker[26].red; ker27_red = ker[27].red;
+    ker28_red = ker[28].red; ker29_red = ker[29].red; ker30_red = ker[30].red; ker31_red = ker[31].red;
+
+    ker32_red = ker[32].red; ker33_red = ker[33].red; ker34_red = ker[34].red; ker35_red = ker[35].red; 
+    ker36_red = ker[36].red; ker37_red = ker[37].red; ker38_red = ker[38].red; ker39_red = ker[39].red;
+    ker40_red = ker[40].red; ker41_red = ker[41].red; ker42_red = ker[42].red; ker43_red = ker[43].red;
+    ker44_red = ker[44].red; ker45_red = ker[45].red; ker46_red = ker[46].red; ker47_red = ker[47].red;
+
+    ker48_red = ker[48].red; ker49_red = ker[49].red; ker50_red = ker[50].red; ker51_red = ker[51].red; 
+    ker52_red = ker[52].red; ker53_red = ker[53].red; ker54_red = ker[54].red; ker55_red = ker[55].red;
+    ker56_red = ker[56].red; ker57_red = ker[57].red; ker58_red = ker[58].red; ker59_red = ker[59].red;
+    ker60_red = ker[60].red; ker61_red = ker[61].red; ker62_red = ker[62].red; ker63_red = ker[63].red;
+
+    for(i = 0; i != limit; i++) 
+    {
+        src_ptr = src; 
+        dst_pointer = dst;
+        for(j = 0; j != limit; j++) 
+        {
+            loop_ptr = src_ptr;
+            loop_ptr1 = src_ptr + dim;
+
+            res = (loop_ptr[0].red * ker0_red) + (loop_ptr[1].red * ker1_red) + (loop_ptr[2].red * ker2_red) +
+                   (loop_ptr[3].red * ker3_red) + (loop_ptr[4].red * ker4_red) + (loop_ptr[5].red * ker5_red) +
+                   (loop_ptr[6].red * ker6_red) + (loop_ptr[7].red * ker7_red);
+
+            // res2 = (loop_ptr[0].green * ker[0].green) + (loop_ptr[1].green * ker[1].green) + (loop_ptr[2].green * ker[2].green) +
+            //        (loop_ptr[3].green * ker[3].green) + (loop_ptr[4].green * ker[4].green) + (loop_ptr[5].green * ker[5].green) +
+            //        (loop_ptr[6].green * ker[6].green) + (loop_ptr[7].green * ker[7].green);
+
+            // res3 = (loop_ptr[0].blue * ker[0].blue) + (loop_ptr[1].blue * ker[1].blue) + (loop_ptr[2].blue * ker[2].blue) +
+            //        (loop_ptr[3].blue * ker[3].blue) + (loop_ptr[4].blue * ker[4].blue) + (loop_ptr[5].blue * ker[5].blue) +
+            //        (loop_ptr[6].blue * ker[6].blue) + (loop_ptr[7].blue * ker[7].blue);
+            // Even
+            loop_ptr += (dim << 1);
+
+            res += (loop_ptr1[0].red * ker8_red) + (loop_ptr1[1].red * ker9_red) + (loop_ptr1[2].red * ker10_red) +
+                   (loop_ptr1[3].red * ker11_red) + (loop_ptr1[4].red * ker12_red) + (loop_ptr1[5].red * ker13_red) +
+                   (loop_ptr1[6].red * ker14_red) + (loop_ptr1[7].red * ker15_red);
+
+            // res2 += (loop_ptr1[0].green * ker[8].green) + (loop_ptr1[1].green * ker[9].green) + (loop_ptr1[2].green * ker[10].green) +
+            //        (loop_ptr1[3].green * ker[11].green) + (loop_ptr1[4].green * ker[12].green) + (loop_ptr1[5].green * ker[13].green) +
+            //        (loop_ptr1[6].green * ker[14].green) + (loop_ptr1[7].green * ker[15].green);
+
+            // res3 += (loop_ptr1[0].blue * ker[8].blue) + (loop_ptr1[1].blue * ker[9].blue) + (loop_ptr1[2].blue * ker[10].blue) +
+            //        (loop_ptr1[3].blue * ker[11].blue) + (loop_ptr1[4].blue * ker[12].blue) + (loop_ptr1[5].blue * ker[13].blue) +
+            //        (loop_ptr1[6].blue * ker[14].blue) + (loop_ptr1[7].blue * ker[15].blue);
+            // Odd
+            loop_ptr1 += (dim << 1);
+
+            res += (loop_ptr[0].red * ker16_red) + (loop_ptr[1].red * ker17_red) + (loop_ptr[2].red * ker18_red) +
+                   (loop_ptr[3].red * ker19_red) + (loop_ptr[4].red * ker20_red) + (loop_ptr[5].red * ker21_red) +
+                   (loop_ptr[6].red * ker22_red) + (loop_ptr[7].red * ker23_red);
+
+            // res2 += (loop_ptr[0].green * ker[16].green) + (loop_ptr[1].green * ker[17].green) + (loop_ptr[2].green * ker[18].green) +
+            //        (loop_ptr[3].green * ker[19].green) + (loop_ptr[4].green * ker[20].green) + (loop_ptr[5].green * ker[21].green) +
+            //        (loop_ptr[6].green * ker[22].green) + (loop_ptr[7].green * ker[23].green);
+
+            // res3 += (loop_ptr[0].blue * ker[16].blue) + (loop_ptr[1].blue * ker[17].blue) + (loop_ptr[2].blue * ker[18].blue) +
+            //        (loop_ptr[3].blue * ker[19].blue) + (loop_ptr[4].blue * ker[20].blue) + (loop_ptr[5].blue * ker[21].blue) +
+            //        (loop_ptr[6].blue * ker[22].blue) + (loop_ptr[7].blue * ker[23].blue);
+            // Even
+            loop_ptr += (dim << 1);
+
+            res += (loop_ptr1[0].red * ker24_red) + (loop_ptr1[1].red * ker25_red) + (loop_ptr1[2].red * ker26_red) +
+                   (loop_ptr1[3].red * ker27_red) + (loop_ptr1[4].red * ker28_red) + (loop_ptr1[5].red * ker29_red) +
+                   (loop_ptr1[6].red * ker30_red) + (loop_ptr1[7].red * ker31_red);
+
+            // res2 += (loop_ptr1[0].green * ker[24].green) + (loop_ptr1[1].green * ker[25].green) + (loop_ptr1[2].green * ker[26].green) +
+            //        (loop_ptr1[3].green * ker[27].green) + (loop_ptr1[4].green * ker[28].green) + (loop_ptr1[5].green * ker[29].green) +
+            //        (loop_ptr1[6].green * ker[30].green) + (loop_ptr1[7].green * ker[31].green);
+
+            // res3 += (loop_ptr1[0].blue * ker[24].blue) + (loop_ptr1[1].blue * ker[25].blue) + (loop_ptr1[2].blue * ker[26].blue) +
+            //        (loop_ptr1[3].blue * ker[27].blue) + (loop_ptr1[4].blue * ker[28].blue) + (loop_ptr1[5].blue * ker[29].blue) +
+            //        (loop_ptr1[6].blue * ker[30].blue) + (loop_ptr1[7].blue * ker[31].blue);
+            // Odd
+            loop_ptr1 += (dim << 1);
+
+            res += (loop_ptr[0].red * ker32_red) + (loop_ptr[1].red * ker33_red) + (loop_ptr[2].red * ker34_red) +
+                   (loop_ptr[3].red * ker35_red) + (loop_ptr[4].red * ker36_red) + (loop_ptr[5].red * ker37_red) +
+                   (loop_ptr[6].red * ker38_red) + (loop_ptr[7].red * ker39_red);
+
+            // res2 += (loop_ptr[0].green * ker[32].green) + (loop_ptr[1].green * ker[33].green) + (loop_ptr[2].green * ker[34].green) +
+            //        (loop_ptr[3].green * ker[35].green) + (loop_ptr[4].green * ker[36].green) + (loop_ptr[5].green * ker[37].green) +
+            //        (loop_ptr[6].green * ker[38].green) + (loop_ptr[7].green * ker[39].green);
+
+            // res3 += (loop_ptr[0].blue * ker[32].blue) + (loop_ptr[1].blue * ker[33].blue) + (loop_ptr[2].blue * ker[34].blue) +
+            //        (loop_ptr[3].blue * ker[35].blue) + (loop_ptr[4].blue * ker[36].blue) + (loop_ptr[5].blue * ker[37].blue) +
+            //        (loop_ptr[6].blue * ker[38].blue) + (loop_ptr[7].blue * ker[39].blue);
+            // Even
+            loop_ptr += (dim << 1);
+
+            res += (loop_ptr1[0].red * ker40_red) + (loop_ptr1[1].red * ker41_red) + (loop_ptr1[2].red * ker42_red) +
+                   (loop_ptr1[3].red * ker43_red) + (loop_ptr1[4].red * ker44_red) + (loop_ptr1[5].red * ker45_red) +
+                   (loop_ptr1[6].red * ker46_red) + (loop_ptr1[7].red * ker47_red);
+
+           // res2 += (loop_ptr1[0].green * ker[40].green) + (loop_ptr1[1].green * ker[41].green) + (loop_ptr1[2].green * ker[42].green) +
+           //        (loop_ptr1[3].green * ker[43].green) + (loop_ptr1[4].green * ker[44].green) + (loop_ptr1[5].green * ker[45].green) +
+           //        (loop_ptr1[6].green * ker[46].green) + (loop_ptr1[7].green * ker[47].green);
+
+           // res3 += (loop_ptr1[0].blue * ker[40].blue) + (loop_ptr1[1].blue * ker[41].blue) + (loop_ptr1[2].blue * ker[42].blue) +
+           //        (loop_ptr1[3].blue * ker[43].blue) + (loop_ptr1[4].blue * ker[44].blue) + (loop_ptr1[5].blue * ker[45].blue) +
+           //        (loop_ptr1[6].blue * ker[46].blue) + (loop_ptr1[7].blue * ker[47].blue);
+            // Odd
+            loop_ptr1 += (dim << 1);
+
+            res += (loop_ptr[0].red * ker48_red) + (loop_ptr[1].red * ker49_red) + (loop_ptr[2].red * ker50_red) +
+                   (loop_ptr[3].red * ker51_red) + (loop_ptr[4].red * ker52_red) + (loop_ptr[5].red * ker53_red) +
+                   (loop_ptr[6].red * ker54_red) + (loop_ptr[7].red * ker55_red);
+
+           //  res2 += (loop_ptr[0].green * ker[48].green) + (loop_ptr[1].green * ker[49].green) + (loop_ptr[2].green * ker[50].green) +
+           //         (loop_ptr[3].green * ker[51].green) + (loop_ptr[4].green * ker[52].green) + (loop_ptr[5].green * ker[53].green) +
+           //         (loop_ptr[6].green * ker[54].green) + (loop_ptr[7].green * ker[55].green);
+
+           //  res3 += (loop_ptr[0].blue * ker[48].blue) + (loop_ptr[1].blue * ker[49].blue) + (loop_ptr[2].blue * ker[50].blue) +
+           //         (loop_ptr[3].blue * ker[51].blue) + (loop_ptr[4].blue * ker[52].blue) + (loop_ptr[5].blue * ker[53].blue) +
+           //         (loop_ptr[6].blue * ker[54].blue) + (loop_ptr[7].blue * ker[55].blue);
+            // Even
+            loop_ptr += (dim << 1);
+
+            res += (loop_ptr1[0].red * ker56_red) + (loop_ptr1[1].red * ker57_red) + (loop_ptr1[2].red * ker58_red) +
+                   (loop_ptr1[3].red * ker59_red) + (loop_ptr1[4].red * ker60_red) + (loop_ptr1[5].red * ker61_red) +
+                   (loop_ptr1[6].red * ker62_red) + (loop_ptr1[7].red * ker63_red);
+
+           //  res2 += (loop_ptr1[0].green * ker[56].green) + (loop_ptr1[1].green * ker[57].green) + (loop_ptr1[2].green * ker[58].green) +
+           //         (loop_ptr1[3].green * ker[59].green) + (loop_ptr1[4].green * ker[60].green) + (loop_ptr1[5].green * ker[61].green) +
+           //         (loop_ptr1[6].green * ker[62].green) + (loop_ptr1[7].green * ker[63].green);
+
+           //  res3 += (loop_ptr1[0].blue * ker[56].blue) + (loop_ptr1[1].blue * ker[57].blue) + (loop_ptr1[2].blue * ker[58].blue) +
+           //         (loop_ptr1[3].blue * ker[59].blue) + (loop_ptr1[4].blue * ker[60].blue) + (loop_ptr1[5].blue * ker[61].blue) +
+           //         (loop_ptr1[6].blue * ker[62].blue) + (loop_ptr1[7].blue * ker[63].blue);
+
+
+            *dst_pointer = res;
+            src_ptr++;
+            dst_pointer++;
+        }
+        src += dim;
+        dst += dim;
+    }
+    dst = dst_back;
+    src = src_back;
+
+    ker0_red = ker[0].green; ker1_red = ker[1].green; ker2_red = ker[2].green; ker3_red = ker[3].green; 
+    ker4_red = ker[4].green; ker5_red = ker[5].green; ker6_red = ker[6].green; ker7_red = ker[7].green;
+    ker8_red = ker[8].green; ker9_red = ker[9].green; ker10_red = ker[10].green; ker11_red = ker[11].green;
+    ker12_red = ker[12].green; ker13_red = ker[13].green; ker14_red = ker[14].green; ker15_red = ker[15].green;
+
+    ker16_red = ker[16].green; ker17_red = ker[17].green; ker18_red = ker[18].green; ker19_red = ker[19].green; 
+    ker20_red = ker[20].green; ker21_red = ker[21].green; ker22_red = ker[22].green; ker23_red = ker[23].green;
+    ker24_red = ker[24].green; ker25_red = ker[25].green; ker26_red = ker[26].green; ker27_red = ker[27].green;
+    ker28_red = ker[28].green; ker29_red = ker[29].green; ker30_red = ker[30].green; ker31_red = ker[31].green;
+
+    ker32_red = ker[32].green; ker33_red = ker[33].green; ker34_red = ker[34].green; ker35_red = ker[35].green; 
+    ker36_red = ker[36].green; ker37_red = ker[37].green; ker38_red = ker[38].green; ker39_red = ker[39].green;
+    ker40_red = ker[40].green; ker41_red = ker[41].green; ker42_red = ker[42].green; ker43_red = ker[43].green;
+    ker44_red = ker[44].green; ker45_red = ker[45].green; ker46_red = ker[46].green; ker47_red = ker[47].green;
+
+    ker48_red = ker[48].green; ker49_red = ker[49].green; ker50_red = ker[50].green; ker51_red = ker[51].green; 
+    ker52_red = ker[52].green; ker53_red = ker[53].green; ker54_red = ker[54].green; ker55_red = ker[55].green;
+    ker56_red = ker[56].green; ker57_red = ker[57].green; ker58_red = ker[58].green; ker59_red = ker[59].green;
+    ker60_red = ker[60].green; ker61_red = ker[61].green; ker62_red = ker[62].green; ker63_red = ker[63].green;
+
+    for(i = 0; i != limit; i++) 
+    {
+        src_ptr = src; 
+        dst_pointer = dst;
+        for(j = 0; j != limit; j++) 
+        {
+            loop_ptr = src_ptr;
+            loop_ptr1 = src_ptr + dim;
+
+            res = (loop_ptr[0].green * ker0_red) + (loop_ptr[1].green * ker1_red) + (loop_ptr[2].green * ker2_red) +
+                   (loop_ptr[3].green * ker3_red) + (loop_ptr[4].green * ker4_red) + (loop_ptr[5].green * ker5_red) +
+                   (loop_ptr[6].green * ker6_red) + (loop_ptr[7].green * ker7_red);
+
+            // res2 = (loop_ptr[0].green * ker[0].green) + (loop_ptr[1].green * ker[1].green) + (loop_ptr[2].green * ker[2].green) +
+            //        (loop_ptr[3].green * ker[3].green) + (loop_ptr[4].green * ker[4].green) + (loop_ptr[5].green * ker[5].green) +
+            //        (loop_ptr[6].green * ker[6].green) + (loop_ptr[7].green * ker[7].green);
+
+            // res3 = (loop_ptr[0].blue * ker[0].blue) + (loop_ptr[1].blue * ker[1].blue) + (loop_ptr[2].blue * ker[2].blue) +
+            //        (loop_ptr[3].blue * ker[3].blue) + (loop_ptr[4].blue * ker[4].blue) + (loop_ptr[5].blue * ker[5].blue) +
+            //        (loop_ptr[6].blue * ker[6].blue) + (loop_ptr[7].blue * ker[7].blue);
+            // Even
+            loop_ptr += (dim << 1);
+
+            res += (loop_ptr1[0].green * ker8_red) + (loop_ptr1[1].green * ker9_red) + (loop_ptr1[2].green * ker10_red) +
+                   (loop_ptr1[3].green * ker11_red) + (loop_ptr1[4].green * ker12_red) + (loop_ptr1[5].green * ker13_red) +
+                   (loop_ptr1[6].green * ker14_red) + (loop_ptr1[7].green * ker15_red);
+
+            // res2 += (loop_ptr1[0].green * ker[8].green) + (loop_ptr1[1].green * ker[9].green) + (loop_ptr1[2].green * ker[10].green) +
+            //        (loop_ptr1[3].green * ker[11].green) + (loop_ptr1[4].green * ker[12].green) + (loop_ptr1[5].green * ker[13].green) +
+            //        (loop_ptr1[6].green * ker[14].green) + (loop_ptr1[7].green * ker[15].green);
+
+            // res3 += (loop_ptr1[0].blue * ker[8].blue) + (loop_ptr1[1].blue * ker[9].blue) + (loop_ptr1[2].blue * ker[10].blue) +
+            //        (loop_ptr1[3].blue * ker[11].blue) + (loop_ptr1[4].blue * ker[12].blue) + (loop_ptr1[5].blue * ker[13].blue) +
+            //        (loop_ptr1[6].blue * ker[14].blue) + (loop_ptr1[7].blue * ker[15].blue);
+            // Odd
+            loop_ptr1 += (dim << 1);
+
+            res += (loop_ptr[0].green * ker16_red) + (loop_ptr[1].green * ker17_red) + (loop_ptr[2].green * ker18_red) +
+                   (loop_ptr[3].green * ker19_red) + (loop_ptr[4].green * ker20_red) + (loop_ptr[5].green * ker21_red) +
+                   (loop_ptr[6].green * ker22_red) + (loop_ptr[7].green * ker23_red);
+
+            // res2 += (loop_ptr[0].green * ker[16].green) + (loop_ptr[1].green * ker[17].green) + (loop_ptr[2].green * ker[18].green) +
+            //        (loop_ptr[3].green * ker[19].green) + (loop_ptr[4].green * ker[20].green) + (loop_ptr[5].green * ker[21].green) +
+            //        (loop_ptr[6].green * ker[22].green) + (loop_ptr[7].green * ker[23].green);
+
+            // res3 += (loop_ptr[0].blue * ker[16].blue) + (loop_ptr[1].blue * ker[17].blue) + (loop_ptr[2].blue * ker[18].blue) +
+            //        (loop_ptr[3].blue * ker[19].blue) + (loop_ptr[4].blue * ker[20].blue) + (loop_ptr[5].blue * ker[21].blue) +
+            //        (loop_ptr[6].blue * ker[22].blue) + (loop_ptr[7].blue * ker[23].blue);
+            // Even
+            loop_ptr += (dim << 1);
+
+            res += (loop_ptr1[0].green * ker24_red) + (loop_ptr1[1].green * ker25_red) + (loop_ptr1[2].green * ker26_red) +
+                   (loop_ptr1[3].green * ker27_red) + (loop_ptr1[4].green * ker28_red) + (loop_ptr1[5].green * ker29_red) +
+                   (loop_ptr1[6].green * ker30_red) + (loop_ptr1[7].green * ker31_red);
+
+            // res2 += (loop_ptr1[0].green * ker[24].green) + (loop_ptr1[1].green * ker[25].green) + (loop_ptr1[2].green * ker[26].green) +
+            //        (loop_ptr1[3].green * ker[27].green) + (loop_ptr1[4].green * ker[28].green) + (loop_ptr1[5].green * ker[29].green) +
+            //        (loop_ptr1[6].green * ker[30].green) + (loop_ptr1[7].green * ker[31].green);
+
+            // res3 += (loop_ptr1[0].blue * ker[24].blue) + (loop_ptr1[1].blue * ker[25].blue) + (loop_ptr1[2].blue * ker[26].blue) +
+            //        (loop_ptr1[3].blue * ker[27].blue) + (loop_ptr1[4].blue * ker[28].blue) + (loop_ptr1[5].blue * ker[29].blue) +
+            //        (loop_ptr1[6].blue * ker[30].blue) + (loop_ptr1[7].blue * ker[31].blue);
+            // Odd
+            loop_ptr1 += (dim << 1);
+
+            res += (loop_ptr[0].green * ker32_red) + (loop_ptr[1].green * ker33_red) + (loop_ptr[2].green * ker34_red) +
+                   (loop_ptr[3].green * ker35_red) + (loop_ptr[4].green * ker36_red) + (loop_ptr[5].green * ker37_red) +
+                   (loop_ptr[6].green * ker38_red) + (loop_ptr[7].green * ker39_red);
+
+            // res2 += (loop_ptr[0].green * ker[32].green) + (loop_ptr[1].green * ker[33].green) + (loop_ptr[2].green * ker[34].green) +
+            //        (loop_ptr[3].green * ker[35].green) + (loop_ptr[4].green * ker[36].green) + (loop_ptr[5].green * ker[37].green) +
+            //        (loop_ptr[6].green * ker[38].green) + (loop_ptr[7].green * ker[39].green);
+
+            // res3 += (loop_ptr[0].blue * ker[32].blue) + (loop_ptr[1].blue * ker[33].blue) + (loop_ptr[2].blue * ker[34].blue) +
+            //        (loop_ptr[3].blue * ker[35].blue) + (loop_ptr[4].blue * ker[36].blue) + (loop_ptr[5].blue * ker[37].blue) +
+            //        (loop_ptr[6].blue * ker[38].blue) + (loop_ptr[7].blue * ker[39].blue);
+            // Even
+            loop_ptr += (dim << 1);
+
+            res += (loop_ptr1[0].green * ker40_red) + (loop_ptr1[1].green * ker41_red) + (loop_ptr1[2].green * ker42_red) +
+                   (loop_ptr1[3].green * ker43_red) + (loop_ptr1[4].green * ker44_red) + (loop_ptr1[5].green * ker45_red) +
+                   (loop_ptr1[6].green * ker46_red) + (loop_ptr1[7].green * ker47_red);
+
+           // res2 += (loop_ptr1[0].green * ker[40].green) + (loop_ptr1[1].green * ker[41].green) + (loop_ptr1[2].green * ker[42].green) +
+           //        (loop_ptr1[3].green * ker[43].green) + (loop_ptr1[4].green * ker[44].green) + (loop_ptr1[5].green * ker[45].green) +
+           //        (loop_ptr1[6].green * ker[46].green) + (loop_ptr1[7].green * ker[47].green);
+
+           // res3 += (loop_ptr1[0].blue * ker[40].blue) + (loop_ptr1[1].blue * ker[41].blue) + (loop_ptr1[2].blue * ker[42].blue) +
+           //        (loop_ptr1[3].blue * ker[43].blue) + (loop_ptr1[4].blue * ker[44].blue) + (loop_ptr1[5].blue * ker[45].blue) +
+           //        (loop_ptr1[6].blue * ker[46].blue) + (loop_ptr1[7].blue * ker[47].blue);
+            // Odd
+            loop_ptr1 += (dim << 1);
+
+            res += (loop_ptr[0].green * ker48_red) + (loop_ptr[1].green * ker49_red) + (loop_ptr[2].green * ker50_red) +
+                   (loop_ptr[3].green * ker51_red) + (loop_ptr[4].green * ker52_red) + (loop_ptr[5].green * ker53_red) +
+                   (loop_ptr[6].green * ker54_red) + (loop_ptr[7].green * ker55_red);
+
+           //  res2 += (loop_ptr[0].green * ker[48].green) + (loop_ptr[1].green * ker[49].green) + (loop_ptr[2].green * ker[50].green) +
+           //         (loop_ptr[3].green * ker[51].green) + (loop_ptr[4].green * ker[52].green) + (loop_ptr[5].green * ker[53].green) +
+           //         (loop_ptr[6].green * ker[54].green) + (loop_ptr[7].green * ker[55].green);
+
+           //  res3 += (loop_ptr[0].blue * ker[48].blue) + (loop_ptr[1].blue * ker[49].blue) + (loop_ptr[2].blue * ker[50].blue) +
+           //         (loop_ptr[3].blue * ker[51].blue) + (loop_ptr[4].blue * ker[52].blue) + (loop_ptr[5].blue * ker[53].blue) +
+           //         (loop_ptr[6].blue * ker[54].blue) + (loop_ptr[7].blue * ker[55].blue);
+            // Even
+            loop_ptr += (dim << 1);
+
+            res += (loop_ptr1[0].green * ker56_red) + (loop_ptr1[1].green * ker57_red) + (loop_ptr1[2].green * ker58_red) +
+                   (loop_ptr1[3].green * ker59_red) + (loop_ptr1[4].green * ker60_red) + (loop_ptr1[5].green * ker61_red) +
+                   (loop_ptr1[6].green * ker62_red) + (loop_ptr1[7].green * ker63_red);
+
+           //  res2 += (loop_ptr1[0].green * ker[56].green) + (loop_ptr1[1].green * ker[57].green) + (loop_ptr1[2].green * ker[58].green) +
+           //         (loop_ptr1[3].green * ker[59].green) + (loop_ptr1[4].green * ker[60].green) + (loop_ptr1[5].green * ker[61].green) +
+           //         (loop_ptr1[6].green * ker[62].green) + (loop_ptr1[7].green * ker[63].green);
+
+           //  res3 += (loop_ptr1[0].blue * ker[56].blue) + (loop_ptr1[1].blue * ker[57].blue) + (loop_ptr1[2].blue * ker[58].blue) +
+           //         (loop_ptr1[3].blue * ker[59].blue) + (loop_ptr1[4].blue * ker[60].blue) + (loop_ptr1[5].blue * ker[61].blue) +
+           //         (loop_ptr1[6].blue * ker[62].blue) + (loop_ptr1[7].blue * ker[63].blue);
+
+
+            *dst_pointer += res;
+            src_ptr++;
+            dst_pointer++;
+        }
+        src += dim;
+        dst += dim;
+    }
+    dst = dst_back;
+    src = src_back;
+
+    ker0_red = ker[0].blue; ker1_red = ker[1].blue; ker2_red = ker[2].blue; ker3_red = ker[3].blue; 
+    ker4_red = ker[4].blue; ker5_red = ker[5].blue; ker6_red = ker[6].blue; ker7_red = ker[7].blue;
+    ker8_red = ker[8].blue; ker9_red = ker[9].blue; ker10_red = ker[10].blue; ker11_red = ker[11].blue;
+    ker12_red = ker[12].blue; ker13_red = ker[13].blue; ker14_red = ker[14].blue; ker15_red = ker[15].blue;
+
+    ker16_red = ker[16].blue; ker17_red = ker[17].blue; ker18_red = ker[18].blue; ker19_red = ker[19].blue; 
+    ker20_red = ker[20].blue; ker21_red = ker[21].blue; ker22_red = ker[22].blue; ker23_red = ker[23].blue;
+    ker24_red = ker[24].blue; ker25_red = ker[25].blue; ker26_red = ker[26].blue; ker27_red = ker[27].blue;
+    ker28_red = ker[28].blue; ker29_red = ker[29].blue; ker30_red = ker[30].blue; ker31_red = ker[31].blue;
+
+    ker32_red = ker[32].blue; ker33_red = ker[33].blue; ker34_red = ker[34].blue; ker35_red = ker[35].blue; 
+    ker36_red = ker[36].blue; ker37_red = ker[37].blue; ker38_red = ker[38].blue; ker39_red = ker[39].blue;
+    ker40_red = ker[40].blue; ker41_red = ker[41].blue; ker42_red = ker[42].blue; ker43_red = ker[43].blue;
+    ker44_red = ker[44].blue; ker45_red = ker[45].blue; ker46_red = ker[46].blue; ker47_red = ker[47].blue;
+
+    ker48_red = ker[48].blue; ker49_red = ker[49].blue; ker50_red = ker[50].blue; ker51_red = ker[51].blue; 
+    ker52_red = ker[52].blue; ker53_red = ker[53].blue; ker54_red = ker[54].blue; ker55_red = ker[55].blue;
+    ker56_red = ker[56].blue; ker57_red = ker[57].blue; ker58_red = ker[58].blue; ker59_red = ker[59].blue;
+    ker60_red = ker[60].blue; ker61_red = ker[61].blue; ker62_red = ker[62].blue; ker63_red = ker[63].blue;
+
+    for(i = 0; i != limit; i++) 
+    {
+        src_ptr = src; 
+        dst_pointer = dst;
+        for(j = 0; j != limit; j++) 
+        {
+            loop_ptr = src_ptr;
+            loop_ptr1 = src_ptr + dim;
+
+            res = (loop_ptr[0].blue * ker0_red) + (loop_ptr[1].blue * ker1_red) + (loop_ptr[2].blue * ker2_red) +
+                   (loop_ptr[3].blue * ker3_red) + (loop_ptr[4].blue * ker4_red) + (loop_ptr[5].blue * ker5_red) +
+                   (loop_ptr[6].blue * ker6_red) + (loop_ptr[7].blue * ker7_red);
+
+            // res2 = (loop_ptr[0].blue * ker[0].blue) + (loop_ptr[1].blue * ker[1].blue) + (loop_ptr[2].blue * ker[2].blue) +
+            //        (loop_ptr[3].blue * ker[3].blue) + (loop_ptr[4].blue * ker[4].blue) + (loop_ptr[5].blue * ker[5].blue) +
+            //        (loop_ptr[6].blue * ker[6].blue) + (loop_ptr[7].blue * ker[7].blue);
+
+            // res3 = (loop_ptr[0].blue * ker[0].blue) + (loop_ptr[1].blue * ker[1].blue) + (loop_ptr[2].blue * ker[2].blue) +
+            //        (loop_ptr[3].blue * ker[3].blue) + (loop_ptr[4].blue * ker[4].blue) + (loop_ptr[5].blue * ker[5].blue) +
+            //        (loop_ptr[6].blue * ker[6].blue) + (loop_ptr[7].blue * ker[7].blue);
+            // Even
+            loop_ptr += (dim << 1);
+
+            res += (loop_ptr1[0].blue * ker8_red) + (loop_ptr1[1].blue * ker9_red) + (loop_ptr1[2].blue * ker10_red) +
+                   (loop_ptr1[3].blue * ker11_red) + (loop_ptr1[4].blue * ker12_red) + (loop_ptr1[5].blue * ker13_red) +
+                   (loop_ptr1[6].blue * ker14_red) + (loop_ptr1[7].blue * ker15_red);
+
+            // res2 += (loop_ptr1[0].blue * ker[8].blue) + (loop_ptr1[1].blue * ker[9].blue) + (loop_ptr1[2].blue * ker[10].blue) +
+            //        (loop_ptr1[3].blue * ker[11].blue) + (loop_ptr1[4].blue * ker[12].blue) + (loop_ptr1[5].blue * ker[13].blue) +
+            //        (loop_ptr1[6].blue * ker[14].blue) + (loop_ptr1[7].blue * ker[15].blue);
+
+            // res3 += (loop_ptr1[0].blue * ker[8].blue) + (loop_ptr1[1].blue * ker[9].blue) + (loop_ptr1[2].blue * ker[10].blue) +
+            //        (loop_ptr1[3].blue * ker[11].blue) + (loop_ptr1[4].blue * ker[12].blue) + (loop_ptr1[5].blue * ker[13].blue) +
+            //        (loop_ptr1[6].blue * ker[14].blue) + (loop_ptr1[7].blue * ker[15].blue);
+            // Odd
+            loop_ptr1 += (dim << 1);
+
+            res += (loop_ptr[0].blue * ker16_red) + (loop_ptr[1].blue * ker17_red) + (loop_ptr[2].blue * ker18_red) +
+                   (loop_ptr[3].blue * ker19_red) + (loop_ptr[4].blue * ker20_red) + (loop_ptr[5].blue * ker21_red) +
+                   (loop_ptr[6].blue * ker22_red) + (loop_ptr[7].blue * ker23_red);
+
+            // res2 += (loop_ptr[0].blue * ker[16].blue) + (loop_ptr[1].blue * ker[17].blue) + (loop_ptr[2].blue * ker[18].blue) +
+            //        (loop_ptr[3].blue * ker[19].blue) + (loop_ptr[4].blue * ker[20].blue) + (loop_ptr[5].blue * ker[21].blue) +
+            //        (loop_ptr[6].blue * ker[22].blue) + (loop_ptr[7].blue * ker[23].blue);
+
+            // res3 += (loop_ptr[0].blue * ker[16].blue) + (loop_ptr[1].blue * ker[17].blue) + (loop_ptr[2].blue * ker[18].blue) +
+            //        (loop_ptr[3].blue * ker[19].blue) + (loop_ptr[4].blue * ker[20].blue) + (loop_ptr[5].blue * ker[21].blue) +
+            //        (loop_ptr[6].blue * ker[22].blue) + (loop_ptr[7].blue * ker[23].blue);
+            // Even
+            loop_ptr += (dim << 1);
+
+            res += (loop_ptr1[0].blue * ker24_red) + (loop_ptr1[1].blue * ker25_red) + (loop_ptr1[2].blue * ker26_red) +
+                   (loop_ptr1[3].blue * ker27_red) + (loop_ptr1[4].blue * ker28_red) + (loop_ptr1[5].blue * ker29_red) +
+                   (loop_ptr1[6].blue * ker30_red) + (loop_ptr1[7].blue * ker31_red);
+
+            // res2 += (loop_ptr1[0].blue * ker[24].blue) + (loop_ptr1[1].blue * ker[25].blue) + (loop_ptr1[2].blue * ker[26].blue) +
+            //        (loop_ptr1[3].blue * ker[27].blue) + (loop_ptr1[4].blue * ker[28].blue) + (loop_ptr1[5].blue * ker[29].blue) +
+            //        (loop_ptr1[6].blue * ker[30].blue) + (loop_ptr1[7].blue * ker[31].blue);
+
+            // res3 += (loop_ptr1[0].blue * ker[24].blue) + (loop_ptr1[1].blue * ker[25].blue) + (loop_ptr1[2].blue * ker[26].blue) +
+            //        (loop_ptr1[3].blue * ker[27].blue) + (loop_ptr1[4].blue * ker[28].blue) + (loop_ptr1[5].blue * ker[29].blue) +
+            //        (loop_ptr1[6].blue * ker[30].blue) + (loop_ptr1[7].blue * ker[31].blue);
+            // Odd
+            loop_ptr1 += (dim << 1);
+
+            res += (loop_ptr[0].blue * ker32_red) + (loop_ptr[1].blue * ker33_red) + (loop_ptr[2].blue * ker34_red) +
+                   (loop_ptr[3].blue * ker35_red) + (loop_ptr[4].blue * ker36_red) + (loop_ptr[5].blue * ker37_red) +
+                   (loop_ptr[6].blue * ker38_red) + (loop_ptr[7].blue * ker39_red);
+
+            // res2 += (loop_ptr[0].blue * ker[32].blue) + (loop_ptr[1].blue * ker[33].blue) + (loop_ptr[2].blue * ker[34].blue) +
+            //        (loop_ptr[3].blue * ker[35].blue) + (loop_ptr[4].blue * ker[36].blue) + (loop_ptr[5].blue * ker[37].blue) +
+            //        (loop_ptr[6].blue * ker[38].blue) + (loop_ptr[7].blue * ker[39].blue);
+
+            // res3 += (loop_ptr[0].blue * ker[32].blue) + (loop_ptr[1].blue * ker[33].blue) + (loop_ptr[2].blue * ker[34].blue) +
+            //        (loop_ptr[3].blue * ker[35].blue) + (loop_ptr[4].blue * ker[36].blue) + (loop_ptr[5].blue * ker[37].blue) +
+            //        (loop_ptr[6].blue * ker[38].blue) + (loop_ptr[7].blue * ker[39].blue);
+            // Even
+            loop_ptr += (dim << 1);
+
+            res += (loop_ptr1[0].blue * ker40_red) + (loop_ptr1[1].blue * ker41_red) + (loop_ptr1[2].blue * ker42_red) +
+                   (loop_ptr1[3].blue * ker43_red) + (loop_ptr1[4].blue * ker44_red) + (loop_ptr1[5].blue * ker45_red) +
+                   (loop_ptr1[6].blue * ker46_red) + (loop_ptr1[7].blue * ker47_red);
+
+           // res2 += (loop_ptr1[0].blue * ker[40].blue) + (loop_ptr1[1].blue * ker[41].blue) + (loop_ptr1[2].blue * ker[42].blue) +
+           //        (loop_ptr1[3].blue * ker[43].blue) + (loop_ptr1[4].blue * ker[44].blue) + (loop_ptr1[5].blue * ker[45].blue) +
+           //        (loop_ptr1[6].blue * ker[46].blue) + (loop_ptr1[7].blue * ker[47].blue);
+
+           // res3 += (loop_ptr1[0].blue * ker[40].blue) + (loop_ptr1[1].blue * ker[41].blue) + (loop_ptr1[2].blue * ker[42].blue) +
+           //        (loop_ptr1[3].blue * ker[43].blue) + (loop_ptr1[4].blue * ker[44].blue) + (loop_ptr1[5].blue * ker[45].blue) +
+           //        (loop_ptr1[6].blue * ker[46].blue) + (loop_ptr1[7].blue * ker[47].blue);
+            // Odd
+            loop_ptr1 += (dim << 1);
+
+            res += (loop_ptr[0].blue * ker48_red) + (loop_ptr[1].blue * ker49_red) + (loop_ptr[2].blue * ker50_red) +
+                   (loop_ptr[3].blue * ker51_red) + (loop_ptr[4].blue * ker52_red) + (loop_ptr[5].blue * ker53_red) +
+                   (loop_ptr[6].blue * ker54_red) + (loop_ptr[7].blue * ker55_red);
+
+           //  res2 += (loop_ptr[0].blue * ker[48].blue) + (loop_ptr[1].blue * ker[49].blue) + (loop_ptr[2].blue * ker[50].blue) +
+           //         (loop_ptr[3].blue * ker[51].blue) + (loop_ptr[4].blue * ker[52].blue) + (loop_ptr[5].blue * ker[53].blue) +
+           //         (loop_ptr[6].blue * ker[54].blue) + (loop_ptr[7].blue * ker[55].blue);
+
+           //  res3 += (loop_ptr[0].blue * ker[48].blue) + (loop_ptr[1].blue * ker[49].blue) + (loop_ptr[2].blue * ker[50].blue) +
+           //         (loop_ptr[3].blue * ker[51].blue) + (loop_ptr[4].blue * ker[52].blue) + (loop_ptr[5].blue * ker[53].blue) +
+           //         (loop_ptr[6].blue * ker[54].blue) + (loop_ptr[7].blue * ker[55].blue);
+            // Even
+            loop_ptr += (dim << 1);
+
+            res += (loop_ptr1[0].blue * ker56_red) + (loop_ptr1[1].blue * ker57_red) + (loop_ptr1[2].blue * ker58_red) +
+                   (loop_ptr1[3].blue * ker59_red) + (loop_ptr1[4].blue * ker60_red) + (loop_ptr1[5].blue * ker61_red) +
+                   (loop_ptr1[6].blue * ker62_red) + (loop_ptr1[7].blue * ker63_red);
+
+           //  res2 += (loop_ptr1[0].green * ker[56].green) + (loop_ptr1[1].green * ker[57].green) + (loop_ptr1[2].green * ker[58].green) +
+           //         (loop_ptr1[3].green * ker[59].green) + (loop_ptr1[4].green * ker[60].green) + (loop_ptr1[5].green * ker[61].green) +
+           //         (loop_ptr1[6].green * ker[62].green) + (loop_ptr1[7].green * ker[63].green);
+
+           //  res3 += (loop_ptr1[0].blue * ker[56].blue) + (loop_ptr1[1].blue * ker[57].blue) + (loop_ptr1[2].blue * ker[58].blue) +
+           //         (loop_ptr1[3].blue * ker[59].blue) + (loop_ptr1[4].blue * ker[60].blue) + (loop_ptr1[5].blue * ker[61].blue) +
+           //         (loop_ptr1[6].blue * ker[62].blue) + (loop_ptr1[7].blue * ker[63].blue);
+
+
+            *dst_pointer += res;
+            src_ptr++;
+            dst_pointer++;
+        }
+        src += dim;
+        dst += dim;
+    }
+}
 /*
  * convolution - Your current working version of convolution
  * IMPORTANT: This is the version you will be graded on
@@ -294,97 +759,7 @@ void convolution_mahdi(int dim, pixel *src, pixel *ker, unsigned *dst) {
 char convolution_descr[] = "Convolution: Current working version";
 void convolution(int dim, pixel *src, pixel *ker, unsigned *dst)
 {
-    convolution_mahdi(dim, src, ker,dst);
-// 
-//     int i, j, k;
-//     for (i = 0; i < dim - 8 + 1; i++)
-//         for (j = 0; j < dim - 8 + 1; j++)
-//         {
-//             int sum = 0;
-//             pixel *kerPixel = ker;
-//             for (k = 0; k < 8; k++)
-//             {
-//                 pixel *srcPixel = src + RIDX((i + k), j, dim);
-// 
-//                 int redc0 = srcPixel->red * kerPixel->red;
-//                 int greenc0 = srcPixel->green * kerPixel->green;
-//                 int bluec0 = srcPixel->blue * kerPixel->blue;
-// 
-//                 kerPixel += 1;
-//                 srcPixel += 1;
-// 
-//                 int redc1 = srcPixel->red * kerPixel->red;
-//                 int greenc1 = srcPixel->green * kerPixel->green;
-//                 int bluec1 = srcPixel->blue * kerPixel->blue;
-// 
-//                 int sumc0 = redc0 + greenc0;
-//                 int sumc1 = redc1 + greenc1;
-//                 sum += sumc0 + bluec0;
-//                 sum += sumc1 + bluec1;
-// 
-//                 kerPixel += 1;
-//                 srcPixel += 1;
-// 
-//                 int redc2 = srcPixel->red * kerPixel->red;
-//                 int greenc2 = srcPixel->green * kerPixel->green;
-//                 int bluec2 = srcPixel->blue * kerPixel->blue;
-// 
-//                 kerPixel += 1;
-//                 srcPixel += 1;
-// 
-//                 int redc3 = srcPixel->red * kerPixel->red;
-//                 int greenc3 = srcPixel->green * kerPixel->green;
-//                 int bluec3 = srcPixel->blue * kerPixel->blue;
-// 
-//                 int sumc2 = redc2 + greenc2;
-//                 int sumc3 = redc3 + greenc3;
-// 
-//                 sum += sumc2 + bluec2;
-//                 sum += sumc3 + bluec3;
-// 
-//                 kerPixel += 1;
-//                 srcPixel += 1;
-// 
-//                 int redc4 = srcPixel->red * kerPixel->red;
-//                 int greenc4 = srcPixel->green * kerPixel->green;
-//                 int bluec4 = srcPixel->blue * kerPixel->blue;
-// 
-//                 kerPixel += 1;
-//                 srcPixel += 1;
-// 
-//                 int redc5 = srcPixel->red * kerPixel->red;
-//                 int greenc5 = srcPixel->green * kerPixel->green;
-//                 int bluec5 = srcPixel->blue * kerPixel->blue;
-// 
-//                 int sumc4 = redc4 + greenc4;
-//                 int sumc5 = redc5 + greenc5;
-//                 sum += sumc4 + bluec4;
-//                 sum += sumc5 + bluec5;
-// 
-//                 kerPixel += 1;
-//                 srcPixel += 1;
-// 
-//                 int redc6 = srcPixel->red * kerPixel->red;
-//                 int greenc6 = srcPixel->green * kerPixel->green;
-//                 int bluec6 = srcPixel->blue * kerPixel->blue;
-// 
-//                 kerPixel += 1;
-//                 srcPixel += 1;
-// 
-//                 int redc7 = srcPixel->red * kerPixel->red;
-//                 int greenc7 = srcPixel->green * kerPixel->green;
-//                 int bluec7 = srcPixel->blue * kerPixel->blue;
-// 
-//                 kerPixel += 1;
-// 
-//                 int sumc6 = redc6 + greenc6;
-//                 int sumc7 = redc7 + greenc7;
-// 
-//                 sum += sumc6 + bluec6;
-//                 sum += sumc7 + bluec7;
-//             }
-//             dst[RIDX(i, j, dim)] = sum;
-//         }
+    convolution_mahdi_v2(dim, src, ker,dst);
 }
 
 /*********************************************************************
@@ -400,6 +775,7 @@ void register_conv_functions()
     add_conv_function(&naive_conv, naive_conv_descr);
     add_conv_function(&convolutionMustafaV1, convolutionMustafaV1_descr);
     add_conv_function(&convolution_mahdi, convolution_mahdi_descr);
+    add_conv_function(&convolution_mahdi_v2, convolution_mahdi_v2_descr);
     add_conv_function(&convolution, convolution_descr);
     /* ... Register additional test functions here */
 }
