@@ -62,30 +62,62 @@ void convolutionMustafaV2(int dim, pixel *src, pixel *ker, unsigned *dst)
     int limit = dim - 7;
     pixel *kerRow = ker;
     int val = 0;
+    int k0r, k1r, k2r, k3r, k4r, k5r, k6r, k7r;
+    int k0g, k1g, k2g, k3g, k4g, k5g, k6g, k7g;
+    int k0b, k1b, k2b, k3b, k4b, k5b, k6b, k7b;
     for (k = 0; k < 8; k += 1, kerRow += 8)
     {
+
+        k0r = kerRow[0].red;
+        k1r = kerRow[1].red;
+        k2r = kerRow[2].red;
+        k3r = kerRow[3].red;
+        k4r = kerRow[4].red;
+        k5r = kerRow[5].red;
+        k6r = kerRow[6].red;
+        k7r = kerRow[7].red;
+
+        k0g = kerRow[0].green;
+        k1g = kerRow[1].green;
+        k2g = kerRow[2].green;
+        k3g = kerRow[3].green;
+        k4g = kerRow[4].green;
+        k5g = kerRow[5].green;
+        k6g = kerRow[6].green;
+        k7g = kerRow[7].green;
+
+        k0b = kerRow[0].blue;
+        k1b = kerRow[1].blue;
+        k2b = kerRow[2].blue;
+        k3b = kerRow[3].blue;
+        k4b = kerRow[4].blue;
+        k5b = kerRow[5].blue;
+        k6b = kerRow[6].blue;
+        k7b = kerRow[7].blue;
+
         unsigned *dstL = dst;
-        pixel * elem = src + val;
-        for (i = k; i < limit + k; i += 1, dstL+= dim)
+        pixel *elem = src + val;
+        for (i = k; i < limit + k; i += 1, dstL += dim)
         {
             for (j = 0; j < limit; j++, elem++)
             {
                 int red, blue, green;
-                red = (elem[0].red * kerRow[0].red) + (elem[1].red * kerRow[1].red) + (elem[2].red * kerRow[2].red)
-                 + (elem[3].red * kerRow[3].red) + (elem[4].red * kerRow[4].red) + (elem[5].red * kerRow[5].red)
-                  + (elem[6].red * kerRow[6].red) + (elem[7].red * kerRow[7].red);
+                red = (elem[0].red * k0r) + (elem[1].red * k1r) + (elem[2].red * k2r) + (elem[3].red * k3r) + (elem[4].red * k4r) + (elem[5].red * k5r) + (elem[6].red * k6r) + (elem[7].red * k7r);
 
-                green = (elem[0].green * kerRow[0].green) + (elem[1].green * kerRow[1].green) + (elem[2].green * kerRow[2].green) 
-                + (elem[3].green * kerRow[3].green) + (elem[4].green * kerRow[4].green) + (elem[5].green * kerRow[5].green) 
-                + (elem[6].green * kerRow[6].green) + (elem[7].green * kerRow[7].green);
+                green = (elem[0].green * k0g) + (elem[1].green * k1g) + (elem[2].green * k2g) + (elem[3].green * k3g) + (elem[4].green * k4g) + (elem[5].green * k5g)
+                 + (elem[6].green * k6g) + (elem[7].green * k7g);
 
-                blue = (elem[0].blue * kerRow[0].blue) + (elem[1].blue * kerRow[1].blue) + (elem[2].blue * kerRow[2].blue) 
-                + (elem[3].blue * kerRow[3].blue) + (elem[4].blue * kerRow[4].blue) + (elem[5].blue * kerRow[5].blue)
-                 + (elem[6].blue * kerRow[6].blue) + (elem[7].blue * kerRow[7].blue);
+                blue = (elem[0].blue * k0b) + (elem[1].blue * k1b) + (elem[2].blue * k2b) +
+                 (elem[3].blue * k3b) + (elem[4].blue * k4b) + (elem[5].blue * k5b) + 
+                 (elem[6].blue * k6b) + (elem[7].blue * k7b);
+
+                // green = (elem[0].green * kerRow[0].green) + (elem[1].green * kerRow[1].green) + (elem[2].green * kerRow[2].green) + (elem[3].green * kerRow[3].green) + (elem[4].green * kerRow[4].green) + (elem[5].green * kerRow[5].green) + (elem[6].green * kerRow[6].green) + (elem[7].green * kerRow[7].green);
+
+                // blue = (elem[0].blue * kerRow[0].blue) + (elem[1].blue * kerRow[1].blue) + (elem[2].blue * kerRow[2].blue) + (elem[3].blue * kerRow[3].blue) + (elem[4].blue * kerRow[4].blue) + (elem[5].blue * kerRow[5].blue) + (elem[6].blue * kerRow[6].blue) + (elem[7].blue * kerRow[7].blue);
 
                 dstL[j] += red + green + blue;
             }
-            elem+=7;
+            elem += 7;
         }
         val += dim;
     }
