@@ -12,39 +12,76 @@ char convolutionMustafaV1_descr[] = "Convolution: Mustafa v1";
 void convolutionMustafaV1(int dim, pixel *src, pixel *ker, unsigned *dst)
 {
 
-    int i, j, k, l;
+    // int i, j, k, l;
+
+    // for (i = 0; i < 16; i++)
+    // {
+    //     dst[i] = 0;
+    // }
+    // pixel *kerPixel = ker;
+    // for (k = 0; k < 2; k++)
+    //     for (l = 0; l < 2; l++, kerPixel++)
+    //     {
+    //         int red = kerPixel->red;
+    //         int blue = kerPixel->blue;
+    //         int green = kerPixel->green;
+
+    //         for (i = 0; i < dim - 1; i++)
+    //             for (j = 0; j < dim - 1; j++)
+    //             {
+    //                 pixel *srcPixel = src + RIDX((i + k), (j + l), dim);
+    //                 int sum = srcPixel->red * red;
+    //                 sum += srcPixel->green * green;
+    //                 sum += srcPixel->blue * blue;
+    //                 dst[RIDX(i, j, dim)] += sum;
+    //                 // printf("k=%d l=%d i=%d j=%d****************************\n", k, l, i, j);
+    //                 // for (int x = 0; x < (dim - 1); x++)
+    //                 // {
+    //                 //     for (int y = 0; y < (dim - 1); y++)
+    //                 //     {
+    //                 //         printf("%d  ", dst[x * (dim-1) + y]);
+    //                 //     }
+    //                 //     printf(" \n");
+    //                 // }
+    //             }
+    //     }
+
+    int i, j, k;
 
     for (i = 0; i < 16; i++)
     {
         dst[i] = 0;
     }
-    pixel *kerPixel = ker;
-    for (k = 0; k < 2; k++)
-        for (l = 0; l < 2; l++, kerPixel++)
-        {
-            int red = kerPixel->red;
-            int blue = kerPixel->blue;
-            int green = kerPixel->green;
 
-            for (i = 0; i < dim - 1; i++)
-                for (j = 0; j < dim - 1; j++)
-                {
-                    pixel *srcPixel = src + RIDX((i + k), (j + l), dim);
-                    int sum = srcPixel->red * red;
-                    sum += srcPixel->green * green;
-                    sum += srcPixel->blue * blue;
-                    dst[RIDX(i, j, dim)] += sum;
-                    // printf("k=%d l=%d i=%d j=%d****************************\n", k, l, i, j);
-                    // for (int x = 0; x < (dim - 1); x++)
-                    // {
-                    //     for (int y = 0; y < (dim - 1); y++)
-                    //     {
-                    //         printf("%d  ", dst[x * (dim-1) + y]);
-                    //     }
-                    //     printf(" \n");
-                    // }
-                }
+    int limit = dim - 1;
+    for (k = 0; k < 2; k++)
+    {
+        pixel *kerRow = ker + (k << 1);
+        unsigned *dstPixel = dst;
+        pixel *srcPixel = src + k * dim;
+
+        for (i = k; i < limit + k; i++)
+        {
+            for (j = 0; j < limit; j++, dstPixel++, srcPixel++)
+            {
+                int red, green, blue;
+                red = (srcPixel[0].red * kerRow[0].red) + (srcPixel[1].red * kerRow[1].red);
+                // + (srcPixel[2].red * kerRow[2].red) + (srcPixel[3].red * kerRow[3].red) +
+                //       (srcPixel[4].red * kerRow[4].red) + (srcPixel[5].red * kerRow[5].red) + (srcPixel[6].red * kerRow[6].red) + (srcPixel[7].red * kerRow[7].red);
+
+                green = (srcPixel[0].green * kerRow[0].green) + (srcPixel[1].green * kerRow[1].green);
+                //  (srcPixel[2].green * kerRow[2].green) + (srcPixel[3].green * kerRow[3].green) +
+                //         (srcPixel[4].green * kerRow[4].green) + (srcPixel[5].green * kerRow[5].green) + (srcPixel[6].green * kerRow[6].green) + (srcPixel[7].green * kerRow[7].green);
+
+                blue = (srcPixel[0].blue * kerRow[0].blue) + (srcPixel[1].blue * kerRow[1].blue) ;
+                // + (srcPixel[2].blue * kerRow[2].blue) + (srcPixel[3].blue * kerRow[3].blue) +
+                //        (srcPixel[4].blue * kerRow[4].blue) + (srcPixel[5].blue * kerRow[5].blue) + (srcPixel[6].blue * kerRow[6].blue) + (srcPixel[7].blue * kerRow[7].blue);
+
+                dstPixel[0] += red + green + blue;
+            }
+            dstPixel+=1;
         }
+    }
 }
 
 char convolutionGEMM_descr[] = "GEMM";
@@ -53,10 +90,7 @@ void convolutionGEMM(int dim, pixel *src, pixel *ker, unsigned *dst)
     // int i, j, k;
 
     // for (i = 0; i < 16; i++)
-    // {
-    //     dst[i] = 0;
-    // }
-
+    // convolutionMustafaV1
     // pixel *kerRow = ker;
     // for (k = 0; k < 2; k++, kerRow += 2)
     // {
@@ -185,7 +219,7 @@ int main()
     //     printf("%d \n", dst[i]);
     // }
 
-    convolutionGEMM(dim, src, ker, dst);
+    convolutionMustafaV1(dim, src, ker, dst);
 
     for (int i = 0; i < 16; i++)
     {
