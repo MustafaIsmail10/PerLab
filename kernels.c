@@ -408,14 +408,16 @@ char average_pooling_descr[] = "Average Pooling: Current working version";
 void average_pooling(int dim, pixel *src, pixel *dst)
 {
 
-    naive_average_pooling(dim, src, dst);
+    // Version 2 is the one that works.
+    avg_pool_mahdi_v2(dim,src,dst);
 }
 
 char avg_pool_mahdi_descr[] = "avg pooling function mahdi";
 void avg_pool_mahdi(int dim, pixel *src, pixel *dst)
 {
-    int i, j, k, l;
+    int i, j;
     int limit = dim / 2;
+
 
     for (i = 0; i < limit; i++)
         for (j = 0; j < limit; j++)
@@ -430,54 +432,187 @@ void avg_pool_mahdi(int dim, pixel *src, pixel *dst)
             int sumB0 = srcPixel->blue;
 
             // 0,1
-            srcPixel += 1;
+            srcPixel = src + RIDX(i * 2, j * 2 + 1, dim);
 
             int sumR1 = srcPixel->red;
             int sumG1 = srcPixel->green;
             int sumB1 = srcPixel->blue;
 
-            dstPixel->red = sumR0 + sumR1;
-            dstPixel->green = sumG0 + sumG1;
-            dstPixel->blue = sumB0 + sumB1;
-
             // 1,0
-            srcPixel += dim;
+            srcPixel = src + RIDX(i * 2 + 1, j * 2, dim);
 
             int sumR2 = srcPixel->red;
             int sumG2 = srcPixel->green;
             int sumB2 = srcPixel->blue;
 
             // 1,1
-            srcPixel += 1;
+            srcPixel = src + RIDX(i * 2 + 1, j * 2 + 1, dim);
 
             int sumR3 = srcPixel->red;
             int sumG3 = srcPixel->green;
             int sumB3 = srcPixel->blue;
 
-            dstPixel->red = sumR2 + sumR3;
-            dstPixel->green = sumG2 + sumG3;
-            dstPixel->blue = sumB2 + sumB3;
+            dstPixel->red = (sumR0 + sumR1) + (sumR2 + sumR3);
+            dstPixel->green = (sumG0 + sumG1) + (sumG2 + sumG3);
+            dstPixel->blue = (sumB0 + sumB1) + (sumB2 + sumB3);
 
-            // srcPixel += 1;
-            // dstPixel->red = 0;
-            // dstPixel->green = 0;
-            // dstPixel->blue = 0;
-
-            // for (k = 0; k < 2; k++)
-            // {
-            //     for (l = 0; l < 2; l++)
-            //     {
-            //         dstPixel->red += src[RIDX(i * 2 + k, j * 2 + l, dim)].red;
-            //         dstPixel->green += src[RIDX(i * 2 + k, j * 2 + l, dim)].green;
-            //         dstPixel->blue += src[RIDX(i * 2 + k, j * 2 + l, dim)].blue;
-            //     }
-            // }
             dstPixel->red >>= 2;
             dstPixel->green >>= 2;
             dstPixel->blue >>= 2;
         }
 }
 
+char avg_pool_mahdi_v2_descr[] = "avg pooling function mahdi v2";
+void avg_pool_mahdi_v2(int dim, pixel *src, pixel *dst)
+{
+    int i, j;
+    int limit = dim / 2;
+
+    pixel * row1;
+    pixel * row2;
+    pixel * dstPixel;
+
+    for (i = 0; i < limit; i++)
+        for (j = 0; j < limit; j++)
+        {
+            dstPixel = dst + RIDX(i, j, limit);
+            row1 = src + RIDX(i * 2, j * 2, dim);
+            row2 = src + RIDX(i * 2 + 1, j * 2, dim);
+
+            // 0,0
+            int sumR0 = row1->red;
+            int sumG0 = row1->green;
+            int sumB0 = row1->blue;
+
+            // 0,1
+            // srcPixel = src + RIDX(i * 2, j * 2 + 1, dim);
+            row1++;
+
+            int sumR1 = row1->red;
+            int sumG1 = row1->green;
+            int sumB1 = row1->blue;
+
+            // 1,0
+            //srcPixel = src + RIDX(i * 2 + 1, j * 2, dim);
+
+            int sumR2 = row2->red;
+            int sumG2 = row2->green;
+            int sumB2 = row2->blue;
+
+            // 1,1
+            // srcPixel = src + RIDX(i * 2 + 1, j * 2 + 1, dim);
+            row2++;
+
+            int sumR3 = row2->red;
+            int sumG3 = row2->green;
+            int sumB3 = row2->blue;
+
+            dstPixel->red = (sumR0 + sumR1) + (sumR2 + sumR3);
+            dstPixel->green = (sumG0 + sumG1) + (sumG2 + sumG3);
+            dstPixel->blue = (sumB0 + sumB1) + (sumB2 + sumB3);
+
+            dstPixel->red >>= 2;
+            dstPixel->green >>= 2;
+            dstPixel->blue >>= 2;
+        }
+}
+
+char avg_pool_mahdi_v3_descr[] = "avg pooling function mahdi v3";
+void avg_pool_mahdi_v3(int dim, pixel *src, pixel *dst)
+{
+    int i, j;
+    int limit = dim / 2;
+
+    pixel * row1;
+    pixel * row2;
+
+    for (i = 0; i < limit; i+=2)
+        for (j = 0; j < limit; j++)
+        {
+            pixel * dstPixel = dst + RIDX(i, j, limit);
+            // pixel * srcPixel = src[RIDX(i * 2 + k, j * 2 + l, dim)];
+            // pixel * srcPixel = src + RIDX(i * 2, j * 2, dim);
+            pixel * row1 = src + RIDX(i * 2, j * 2, dim);
+            pixel * row2 = src + RIDX(i * 2 + 1, j * 2, dim);
+
+            pixel * row1_b = src + RIDX((i+1) * 2, j * 2, dim);
+            pixel * row2_b = src + RIDX((i+1) * 2 + 1, j * 2, dim);
+
+            // 0,0
+            int sumR0 = row1->red;
+            int sumG0 = row1->green;
+            int sumB0 = row1->blue;
+
+            // 0,1
+            // srcPixel = src + RIDX(i * 2, j * 2 + 1, dim);
+            row1++;
+
+            int sumR1 = row1->red;
+            int sumG1 = row1->green;
+            int sumB1 = row1->blue;
+
+            // 1,0
+            //srcPixel = src + RIDX(i * 2 + 1, j * 2, dim);
+
+            int sumR2 = row2->red;
+            int sumG2 = row2->green;
+            int sumB2 = row2->blue;
+
+            // 1,1
+            // srcPixel = src + RIDX(i * 2 + 1, j * 2 + 1, dim);
+            row2++;
+
+            int sumR3 = row2->red;
+            int sumG3 = row2->green;
+            int sumB3 = row2->blue;
+
+            dstPixel->red = (sumR0 + sumR1) + (sumR2 + sumR3);
+            dstPixel->green = (sumG0 + sumG1) + (sumG2 + sumG3);
+            dstPixel->blue = (sumB0 + sumB1) + (sumB2 + sumB3);
+
+            dstPixel->red >>= 2;
+            dstPixel->green >>= 2;
+            dstPixel->blue >>= 2;
+
+
+
+            // 0,0
+            int sumR0_b = row1_b->red;
+            int sumG0_b = row1_b->green;
+            int sumB0_b = row1_b->blue;
+
+            // 0,1
+            // srcPixel = src + RIDX(i * 2, j * 2 + 1, dim);
+            row1_b++;
+
+            int sumR1_b = row1_b->red;
+            int sumG1_b = row1_b->green;
+            int sumB1_b = row1_b->blue;
+
+            // 1,0
+            //srcPixel = src + RIDX(i * 2 + 1, j * 2, dim);
+
+            int sumR2_b = row2_b->red;
+            int sumG2_b = row2_b->green;
+            int sumB2_b = row2_b->blue;
+
+            // 1,1
+            // srcPixel = src + RIDX(i * 2 + 1, j * 2 + 1, dim);
+            row2_b++;
+
+            int sumR3_b = row2_b->red;
+            int sumG3_b = row2_b->green;
+            int sumB3_b = row2_b->blue;
+
+            dstPixel->red = (sumR0_b + sumR1_b) + (sumR2_b + sumR3_b);
+            dstPixel->green = (sumG0_b + sumG1_b) + (sumG2_b + sumG3_b);
+            dstPixel->blue = (sumB0_b + sumB1_b) + (sumB2_b + sumB3_b);
+
+            dstPixel->red >>= 2;
+            dstPixel->green >>= 2;
+            dstPixel->blue >>= 2;
+        }
+}
 /******************************************************************************
  * register_average_pooling_functions - Register all of your different versions
  *     of the average pooling  with the driver by calling the
@@ -491,5 +626,8 @@ void register_average_pooling_functions()
     add_average_pooling_function(&naive_average_pooling, naive_average_pooling_descr);
     // add_average_pooling_function(&average_pooling, average_pooling_descr);
     add_average_pooling_function(&avg_pool_mahdi, avg_pool_mahdi_descr);
+    add_average_pooling_function(&avg_pool_mahdi_v2, avg_pool_mahdi_v2_descr);
+    // v3 isexperimental
+    add_average_pooling_function(&avg_pool_mahdi_v3, avg_pool_mahdi_v3_descr);
     /* ... Register additional test functions here */
 }
