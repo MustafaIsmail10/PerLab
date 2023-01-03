@@ -17,8 +17,8 @@ team_t team = {
     "e248923",                 /* Second student ID */
     "Mohammad Mahdi Khosravi", /* Second student name */
 
-    "e2492387", /* Third student ID */
-    "Syed Osama Ahmad"  /* Third student Name */
+    "e2492387",        /* Third student ID */
+    "Syed Osama Ahmad" /* Third student Name */
 };
 
 /********************
@@ -60,7 +60,7 @@ void convolutionMustafaV1(int dim, pixel *src, pixel *ker, unsigned *dst)
 
     int i, j, k;
     pixel *kerPixel = ker;
-    int limit = dim-7;
+    int limit = dim - 7;
     for (k = 0; k < 64; k++, kerPixel++)
     {
         int red = kerPixel->red;
@@ -73,75 +73,74 @@ void convolutionMustafaV1(int dim, pixel *src, pixel *ker, unsigned *dst)
         for (i = 0; i < limit; i++)
         {
             pixel *srcPixel1 = start + temp;
-            for (j = 0; j < limit - 3; j += 4)
+            for (j = 0; j < limit ; j += 1)
             {
-                pixel *srcPixel2 = srcPixel1 + 1;
-                pixel *srcPixel3 = srcPixel1 + 2;
-                pixel *srcPixel4 = srcPixel1 + 3;
+                // pixel *srcPixel2 = srcPixel1 + 1;
+                // pixel *srcPixel3 = srcPixel1 + 2;
+                // pixel *srcPixel4 = srcPixel1 + 3;
                 // pixel *srcPixel5 = srcPixel1 + 4;
                 // pixel *srcPixel6 = srcPixel1 + 5;
                 // pixel *srcPixel7 = srcPixel1 + 6;
                 // pixel *srcPixel8 = srcPixel1 + 7;
 
                 int sum1 = srcPixel1->red * red;
-                int sum2 = srcPixel2->red * red;
-                int sum3 = srcPixel3->red * red;
-                int sum4 = srcPixel4->red * red;
+                // int sum2 = srcPixel2->red * red;
+                // int sum3 = srcPixel3->red * red;
+                // int sum4 = srcPixel4->red * red;
                 // int sum5 = srcPixel5->red * red;
                 // int sum6 = srcPixel6->red * red;
                 // int sum7 = srcPixel7->red * red;
                 // int sum8 = srcPixel8->red * red;
 
                 sum1 += srcPixel1->green * green;
-                sum2 += srcPixel2->green * green;
-                sum3 += srcPixel3->green * green;
-                sum4 += srcPixel4->green * green;
+                // sum2 += srcPixel2->green * green;
+                // sum3 += srcPixel3->green * green;
+                // sum4 += srcPixel4->green * green;
                 // sum5 += srcPixel5->green * green;
                 // sum6 += srcPixel6->green * green;
                 // sum7 += srcPixel7->green * green;
                 // sum8 += srcPixel8->green * green;
 
                 sum1 += srcPixel1->blue * blue;
-                sum2 += srcPixel2->blue * blue;
-                sum3 += srcPixel3->blue * blue;
-                sum4 += srcPixel4->blue * blue;
+                // sum2 += srcPixel2->blue * blue;
+                // sum3 += srcPixel3->blue * blue;
+                // sum4 += srcPixel4->blue * blue;
                 // sum5 += srcPixel5->blue * blue;
                 // sum6 += srcPixel6->blue * blue;
                 // sum7 += srcPixel7->blue * blue;
                 // sum8 += srcPixel8->blue * blue;git push --set-upstream origin mustafa
 
-
-                unsigned *dstPixel2 = dstPixel1 + 1;
-                unsigned *dstPixel3 = dstPixel1 + 2;
-                unsigned *dstPixel4 = dstPixel1 + 3;
+                // unsigned *dstPixel2 = dstPixel1 + 1;
+                // unsigned *dstPixel3 = dstPixel1 + 2;
+                // unsigned *dstPixel4 = dstPixel1 + 3;
                 // unsigned *dstPixel5 = dstPixel1 + 4;
                 // unsigned *dstPixel6 = dstPixel1 + 5;
                 // unsigned *dstPixel7 = dstPixel1 + 6;
                 // unsigned *dstPixel8 = dstPixel1 + 7;
 
                 *dstPixel1 += sum1;
-                *dstPixel2 += sum2;
-                *dstPixel3 += sum3;
-                *dstPixel4 += sum4;
+                // *dstPixel2 += sum2;
+                // *dstPixel3 += sum3;
+                // *dstPixel4 += sum4;
                 // *dstPixel5 += sum5;
                 // *dstPixel6 += sum6;
                 // *dstPixel7 += sum7;
                 // *dstPixel8 += sum8;
 
-                dstPixel1 += 4;
-                srcPixel1 += 4;
+                dstPixel1 += 1;
+                srcPixel1 += 1;
             }
 
-            for (; j < limit; j++, dstPixel1++)
-            {
+            // for (; j < limit; j++, dstPixel1++)
+            // {
 
-                int sum = srcPixel1->red * red;
-                sum += srcPixel1->green * green;
-                sum += srcPixel1->blue * blue;
+            //     int sum = srcPixel1->red * red;
+            //     sum += srcPixel1->green * green;
+            //     sum += srcPixel1->blue * blue;
 
-                *dstPixel1 += sum;
-                srcPixel1++;
-            }
+            //     *dstPixel1 += sum;
+            //     srcPixel1++;
+            // }
             dstPixel1 += 7;
             temp += dim;
         }
