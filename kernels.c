@@ -17,8 +17,8 @@ team_t team = {
     "e248923",                 /* Second student ID */
     "Mohammad Mahdi Khosravi", /* Second student name */
 
-    "", /* Third student ID */
-    ""  /* Third student Name */
+    "e2492387", /* Third student ID */
+    "Syed Osama Ahmad"  /* Third student Name */
 };
 
 /********************
@@ -108,7 +108,8 @@ void convolutionMustafaV1(int dim, pixel *src, pixel *ker, unsigned *dst)
                 // sum5 += srcPixel5->blue * blue;
                 // sum6 += srcPixel6->blue * blue;
                 // sum7 += srcPixel7->blue * blue;
-                // sum8 += srcPixel8->blue * blue;
+                // sum8 += srcPixel8->blue * blue;git push --set-upstream origin mustafa
+
 
                 unsigned *dstPixel2 = dstPixel1 + 1;
                 unsigned *dstPixel3 = dstPixel1 + 2;
