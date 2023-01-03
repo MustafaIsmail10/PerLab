@@ -59,38 +59,35 @@ void convolutionMustafaV2(int dim, pixel *src, pixel *ker, unsigned *dst)
 {
 
     int i, j, k;
-
     int limit = dim - 7;
     pixel *kerRow = ker;
     int val = 0;
-    
     for (k = 0; k < 8; k += 1, kerRow += 8)
     {
-        int crow = k * dim;
-        for (i = k; i < limit + k; i += 1, crow += dim)
+        unsigned *dstL = dst;
+        pixel * elem = src + val;
+        for (i = k; i < limit + k; i += 1, dstL+= dim)
         {
-            pixel * elem = src + crow;
             for (j = 0; j < limit; j++, elem++)
             {
-                
                 int red, blue, green;
-                red = (elem[0].red * kerRow[0].red) + (elem[1].red * kerRow[1].red) + (elem[2].red * kerRow[2].red) 
-                + (elem[3].red * kerRow[3].red) + (elem[4].red * kerRow[4].red) + (elem[5].red * kerRow[5].red) 
-                + (elem[6].red * kerRow[6].red) + (elem[7].red * kerRow[7].red);
+                red = (elem[0].red * kerRow[0].red) + (elem[1].red * kerRow[1].red) + (elem[2].red * kerRow[2].red)
+                 + (elem[3].red * kerRow[3].red) + (elem[4].red * kerRow[4].red) + (elem[5].red * kerRow[5].red)
+                  + (elem[6].red * kerRow[6].red) + (elem[7].red * kerRow[7].red);
 
-                green = (elem[0].green * kerRow[0].green) + (elem[1].green * kerRow[1].green) + (elem[2].green * kerRow[2].green)
-                 + (elem[3].green * kerRow[3].green) + (elem[4].green * kerRow[4].green) + (elem[5].green * kerRow[5].green) 
-                 + (elem[6].green * kerRow[6].green) + (elem[7].green * kerRow[7].green);
+                green = (elem[0].green * kerRow[0].green) + (elem[1].green * kerRow[1].green) + (elem[2].green * kerRow[2].green) 
+                + (elem[3].green * kerRow[3].green) + (elem[4].green * kerRow[4].green) + (elem[5].green * kerRow[5].green) 
+                + (elem[6].green * kerRow[6].green) + (elem[7].green * kerRow[7].green);
 
-                blue = (elem[0].blue * kerRow[0].blue) + (elem[1].blue * kerRow[1].blue) + (elem[2].blue * kerRow[2].blue)
-                 + (elem[3].blue * kerRow[3].blue) + (elem[4].blue * kerRow[4].blue) + (elem[5].blue * kerRow[5].blue) 
+                blue = (elem[0].blue * kerRow[0].blue) + (elem[1].blue * kerRow[1].blue) + (elem[2].blue * kerRow[2].blue) 
+                + (elem[3].blue * kerRow[3].blue) + (elem[4].blue * kerRow[4].blue) + (elem[5].blue * kerRow[5].blue)
                  + (elem[6].blue * kerRow[6].blue) + (elem[7].blue * kerRow[7].blue);
 
-
-                dst[crow - val + j] += red + green + blue;
+                dstL[j] += red + green + blue;
             }
+            elem+=7;
         }
-        val += dim; 
+        val += dim;
     }
 }
 
