@@ -9,12 +9,12 @@
  * Please fill in the following team_t struct
  */
 team_t team = {
-    "Shalom Shell-Bee",    /* Team Name */
+    "AYA",    /* Team Name */
 
     "e246581",                              /* First student ID */
     "Moustafa Ismail Hamed Mohamed Ismail", /* First student name */
 
-    "e248923",                 /* Second student ID */
+    "e2489235",                 /* Second student ID */
     "Mohammad Mahdi Khosravi", /* Second student name */
 
     "e2492387",        /* Third student ID */
