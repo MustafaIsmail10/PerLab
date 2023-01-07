@@ -173,13 +173,8 @@ void convolution(int dim, pixel *src, pixel *ker, unsigned *dst)
         {
             for (j = 0; j < limit; j++, elem++)
             {
-                unsigned first, second;
-
-                first = (elem[0].red * k0r) + (elem[0].green * k0g) + (elem[0].blue * k0b) + (elem[1].red * k1r) + (elem[1].green * k1g) + (elem[1].blue * k1b) + (elem[2].red * k2r) + (elem[2].green * k2g) + (elem[2].blue * k2b) + (elem[3].red * k3r) + (elem[3].green * k3g) + (elem[3].blue * k3b);
-
-                second = (elem[4].red * k4r) + (elem[4].green * k4g) + (elem[4].blue * k4b) + (elem[5].red * k5r) + (elem[5].green * k5g) + (elem[5].blue * k5b) + (elem[6].red * k6r) + (elem[6].green * k6g) + (elem[6].blue * k6b) + (elem[7].red * k7r) + (elem[7].green * k7g) + (elem[7].blue * k7b);
-
-                dstL[j] += first + second;
+                dstL[j] += (elem[0].red * k0r) + (elem[0].green * k0g) + (elem[0].blue * k0b) + (elem[1].red * k1r) + (elem[1].green * k1g) + (elem[1].blue * k1b) + (elem[2].red * k2r) + (elem[2].green * k2g) + (elem[2].blue * k2b) +
+                           (elem[3].red * k3r) + (elem[3].green * k3g) + (elem[3].blue * k3b) + (elem[4].red * k4r) + (elem[4].green * k4g) + (elem[4].blue * k4b) + (elem[5].red * k5r) + (elem[5].green * k5g) + (elem[5].blue * k5b) + (elem[6].red * k6r) + (elem[6].green * k6g) + (elem[6].blue * k6b) + (elem[7].red * k7r) + (elem[7].green * k7g) + (elem[7].blue * k7b);
             }
             elem += 7;
         }
