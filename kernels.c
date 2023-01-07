@@ -386,13 +386,13 @@ void convolutionMad(int dim, pixel *src, pixel *ker, unsigned *dst)
 char convolution_descr[] = "Convolution: Current working version";
 void convolution(int dim, pixel *src, pixel *ker, unsigned *dst)
 {
-    int i, j, k;
-    int limit = dim - 7;
+    size_t i, j, k;
+    size_t limit = dim - 7;
     pixel *kerRow = ker;
-    int val = 0;
-    int k0r, k1r, k2r, k3r, k4r, k5r, k6r, k7r;
-    int k0g, k1g, k2g, k3g, k4g, k5g, k6g, k7g;
-    int k0b, k1b, k2b, k3b, k4b, k5b, k6b, k7b;
+    size_t val = 0;
+    size_t k0r, k1r, k2r, k3r, k4r, k5r, k6r, k7r;
+    size_t k0g, k1g, k2g, k3g, k4g, k5g, k6g, k7g;
+    size_t k0b, k1b, k2b, k3b, k4b, k5b, k6b, k7b;
     for (k = 0; k < 8; k += 1, kerRow += 8)
     {
 
