@@ -386,13 +386,13 @@ void convolutionMad(int dim, pixel *src, pixel *ker, unsigned *dst)
 char convolution_descr[] = "Convolution: Current working version";
 void convolution(int dim, pixel *src, pixel *ker, unsigned *dst)
 {
-    size_t i, j, k;
-    size_t limit = dim - 7;
+    unsigned i, j, k;
+    unsigned limit = dim - 7;
     pixel *kerRow = ker;
-    size_t val = 0;
-    size_t k0r, k1r, k2r, k3r, k4r, k5r, k6r, k7r;
-    size_t k0g, k1g, k2g, k3g, k4g, k5g, k6g, k7g;
-    size_t k0b, k1b, k2b, k3b, k4b, k5b, k6b, k7b;
+    unsigned val = 0;
+    unsigned short k0r, k1r, k2r, k3r, k4r, k5r, k6r, k7r;
+    unsigned short k0g, k1g, k2g, k3g, k4g, k5g, k6g, k7g;
+    unsigned short k0b, k1b, k2b, k3b, k4b, k5b, k6b, k7b;
     for (k = 0; k < 8; k += 1, kerRow += 8)
     {
 
@@ -457,7 +457,7 @@ void register_conv_functions()
     add_conv_function(&convolution, convolution_descr);
     // add_conv_function(&convolutionMad, convolutionMad_descr);
     add_conv_function(&convolutionMustafaV2, convolutionMustafaV2_descr);
-    // add_conv_function(&convolutionMustafaVf, convolutionMustafaVf_descr);
+    add_conv_function(&convolutionMustafaVf, convolutionMustafaVf_descr);
 
     /* ... Register additional test functions here */
 }
