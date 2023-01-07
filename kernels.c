@@ -280,7 +280,6 @@ void register_conv_functions()
     add_conv_function(&naive_conv, naive_conv_descr);
     add_conv_function(&convolution, convolution_descr);
     add_conv_function(&convolutionMustafaV2, convolutionMustafaV2_descr);
-    add_conv_function(&convolutionMustafaVf, convolutionMustafaVf_descr);
     /* ... Register additional test functions here */
 }
 
