@@ -96,20 +96,8 @@ void convolutionMustafaV6565(int dim, pixel *src, pixel *ker, unsigned *dst)
         {
             for (j = 0; j < limit; j++, elem++)
             {
-                unsigned red, blue, green;
-                red = (elem[0].red * k0r) + (elem[1].red * k1r) + (elem[2].red * k2r) + (elem[3].red * k3r) + (elem[4].red * k4r) + (elem[5].red * k5r) + (elem[6].red * k6r) + (elem[7].red * k7r);
-
-                green = (elem[0].green * k0g) + (elem[1].green * k1g) + (elem[2].green * k2g) + (elem[3].green * k3g) + (elem[4].green * k4g) + (elem[5].green * k5g) + (elem[6].green * k6g) + (elem[7].green * k7g);
-
-                blue = (elem[0].blue * k0b) + (elem[1].blue * k1b) + (elem[2].blue * k2b) +
-                       (elem[3].blue * k3b) + (elem[4].blue * k4b) + (elem[5].blue * k5b) +
-                       (elem[6].blue * k6b) + (elem[7].blue * k7b);
-
-                // green = (elem[0].green * kerRow[0].green) + (elem[1].green * kerRow[1].green) + (elem[2].green * kerRow[2].green) + (elem[3].green * kerRow[3].green) + (elem[4].green * kerRow[4].green) + (elem[5].green * kerRow[5].green) + (elem[6].green * kerRow[6].green) + (elem[7].green * kerRow[7].green);
-
-                // blue = (elem[0].blue * kerRow[0].blue) + (elem[1].blue * kerRow[1].blue) + (elem[2].blue * kerRow[2].blue) + (elem[3].blue * kerRow[3].blue) + (elem[4].blue * kerRow[4].blue) + (elem[5].blue * kerRow[5].blue) + (elem[6].blue * kerRow[6].blue) + (elem[7].blue * kerRow[7].blue);
-
-                dstL[j] += red + green + blue;
+                dstL[j] += (elem[0].red * k0r) + (elem[0].green * k0g) + (elem[0].blue * k0b) + (elem[1].red * k1r) + (elem[1].green * k1g) + (elem[1].blue * k1b) + (elem[2].red * k2r) + (elem[2].green * k2g) + (elem[2].blue * k2b) +
+                           (elem[3].red * k3r) + (elem[3].green * k3g) + (elem[3].blue * k3b) + (elem[4].red * k4r) + (elem[4].green * k4g) + (elem[4].blue * k4b) + (elem[5].red * k5r) + (elem[5].green * k5g) + (elem[5].blue * k5b) + (elem[6].red * k6r) + (elem[6].green * k6g) + (elem[6].blue * k6b) + (elem[7].red * k7r) + (elem[7].green * k7g) + (elem[7].blue * k7b);
             }
             elem += 7;
         }
