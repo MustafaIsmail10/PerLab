@@ -129,43 +129,47 @@ void convolution(int dim, pixel *src, pixel *ker, unsigned *dst)
     int limit = dim - 7;
     pixel *kerRow = ker;
     int val = 0;
-    int k0r, k1r, k2r, k3r, k4r, k5r, k6r, k7r;
-    int k0g, k1g, k2g, k3g, k4g, k5g, k6g, k7g;
-    int k0b, k1b, k2b, k3b, k4b, k5b, k6b, k7b;
+    //int k0r, k1r, k2r, k3r, k4r, k5r, k6r, k7r;
+    //int k0g, k1g, k2g, k3g, k4g, k5g, k6g, k7g;
+    //int k0b, k1b, k2b, k3b, k4b, k5b, k6b, k7b;
+
+    // int k0[3], k1[3], k2[3], k3[3], k4[3], k5[3], k6[3], k7[3];
+    int k_arr[24];
+
     for (k = 0; k < 8; k += 1, kerRow += 8)
     {
 
-        k0r = kerRow[0].red;
-        k0g = kerRow[0].green;
-        k0b = kerRow[0].blue;
+        k_arr[0] = kerRow[0].red;
+        k_arr[1] = kerRow[0].green;
+        k_arr[2] = kerRow[0].blue;
 
-        k1r = kerRow[1].red;
-        k1g = kerRow[1].green;
-        k1b = kerRow[1].blue;
+        k_arr[3] = kerRow[1].red;
+        k_arr[4] = kerRow[1].green;
+        k_arr[5] = kerRow[1].blue;
 
-        k2r = kerRow[2].red;
-        k2g = kerRow[2].green;
-        k2b = kerRow[2].blue;
+        k_arr[6] = kerRow[2].red;
+        k_arr[7] = kerRow[2].green;
+        k_arr[8] = kerRow[2].blue;
 
-        k3r = kerRow[3].red;
-        k3g = kerRow[3].green;
-        k3b = kerRow[3].blue;
+        k_arr[9] = kerRow[3].red;
+        k_arr[10] = kerRow[3].green;
+        k_arr[11] = kerRow[3].blue;
 
-        k4r = kerRow[4].red;
-        k4g = kerRow[4].green;
-        k4b = kerRow[4].blue;
+        k_arr[12] = kerRow[4].red;
+        k_arr[13] = kerRow[4].green;
+        k_arr[14] = kerRow[4].blue;
 
-        k5r = kerRow[5].red;
-        k5g = kerRow[5].green;
-        k5b = kerRow[5].blue;
+        k_arr[15] = kerRow[5].red;
+        k_arr[16] = kerRow[5].green;
+        k_arr[17] = kerRow[5].blue;
 
-        k6r = kerRow[6].red;
-        k6g = kerRow[6].green;
-        k6b = kerRow[6].blue;
+        k_arr[18] = kerRow[6].red;
+        k_arr[19] = kerRow[6].green;
+        k_arr[20] = kerRow[6].blue;
 
-        k7r = kerRow[7].red;
-        k7g = kerRow[7].green;
-        k7b = kerRow[7].blue;
+        k_arr[21] = kerRow[7].red;
+        k_arr[22] = kerRow[7].green;
+        k_arr[23] = kerRow[7].blue;
 
         unsigned *dstL = dst;
         pixel *elem = src + val;
@@ -173,8 +177,11 @@ void convolution(int dim, pixel *src, pixel *ker, unsigned *dst)
         {
             for (j = 0; j < limit; j++, elem++)
             {
-                dstL[j] += (elem[0].red * k0r) + (elem[0].green * k0g) + (elem[0].blue * k0b) + (elem[1].red * k1r) + (elem[1].green * k1g) + (elem[1].blue * k1b) + (elem[2].red * k2r) + (elem[2].green * k2g) + (elem[2].blue * k2b) +
-                           (elem[3].red * k3r) + (elem[3].green * k3g) + (elem[3].blue * k3b) + (elem[4].red * k4r) + (elem[4].green * k4g) + (elem[4].blue * k4b) + (elem[5].red * k5r) + (elem[5].green * k5g) + (elem[5].blue * k5b) + (elem[6].red * k6r) + (elem[6].green * k6g) + (elem[6].blue * k6b) + (elem[7].red * k7r) + (elem[7].green * k7g) + (elem[7].blue * k7b);
+                dstL[j] += (elem[0].red * k_arr[0]) + (elem[0].green * k_arr[1]) + (elem[0].blue * k_arr[2]) + (elem[1].red * k_arr[3]) + (elem[1].green * k_arr[4]) + (elem[1].blue * k_arr[5]) + 
+                           (elem[2].red * k_arr[6]) + (elem[2].green * k_arr[7]) + (elem[2].blue * k_arr[8]) +
+                           (elem[3].red * k_arr[9]) + (elem[3].green * k_arr[10]) + (elem[3].blue * k_arr[11]) + (elem[4].red * k_arr[12]) + (elem[4].green * k_arr[13]) + (elem[4].blue * k_arr[14]) + 
+                           (elem[5].red * k_arr[15]) + (elem[5].green * k_arr[16]) + (elem[5].blue * k_arr[17]) + (elem[6].red * k_arr[18]) + (elem[6].green * k_arr[19]) + (elem[6].blue * k_arr[20]) + 
+                           (elem[7].red * k_arr[21]) + (elem[7].green * k_arr[22]) + (elem[7].blue * k_arr[23]);
             }
             elem += 7;
         }
