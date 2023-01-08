@@ -64,30 +64,35 @@ void convolutionMustafaV6565(int dim, pixel *src, pixel *ker, unsigned *dst)
     {
 
         k0r = kerRow[0].red;
-        k1r = kerRow[1].red;
-        k2r = kerRow[2].red;
-        k3r = kerRow[3].red;
-        k4r = kerRow[4].red;
-        k5r = kerRow[5].red;
-        k6r = kerRow[6].red;
-        k7r = kerRow[7].red;
-
         k0g = kerRow[0].green;
-        k1g = kerRow[1].green;
-        k2g = kerRow[2].green;
-        k3g = kerRow[3].green;
-        k4g = kerRow[4].green;
-        k5g = kerRow[5].green;
-        k6g = kerRow[6].green;
-        k7g = kerRow[7].green;
-
         k0b = kerRow[0].blue;
+
+        k1r = kerRow[1].red;
+        k1g = kerRow[1].green;
         k1b = kerRow[1].blue;
+
+        k2r = kerRow[2].red;
+        k2g = kerRow[2].green;
         k2b = kerRow[2].blue;
+
+        k3r = kerRow[3].red;
+        k3g = kerRow[3].green;
         k3b = kerRow[3].blue;
+
+        k4r = kerRow[4].red;
+        k4g = kerRow[4].green;
         k4b = kerRow[4].blue;
+
+        k5r = kerRow[5].red;
+        k5g = kerRow[5].green;
         k5b = kerRow[5].blue;
+
+        k6r = kerRow[6].red;
+        k6g = kerRow[6].green;
         k6b = kerRow[6].blue;
+
+        k7r = kerRow[7].red;
+        k7g = kerRow[7].green;
         k7b = kerRow[7].blue;
 
         unsigned *dstL = dst;
@@ -205,7 +210,7 @@ void convolution(int dim, pixel *src, pixel *ker, unsigned *dst)
     int k0r, k1r, k2r, k3r, k4r, k5r, k6r, k7r;
     int k0g, k1g, k2g, k3g, k4g, k5g, k6g, k7g;
     int k0b, k1b, k2b, k3b, k4b, k5b, k6b, k7b;
-    if (dim < 256)
+    if (dim <= 256)
     {
         for (k = 0; k < 8; k += 1, kerRow += 8)
         {
