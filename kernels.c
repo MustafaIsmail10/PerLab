@@ -393,7 +393,7 @@ void convolution(int dim, pixel *src, pixel *ker, unsigned *dst)
     int k0r, k1r, k2r, k3r, k4r, k5r, k6r, k7r;
     int k0g, k1g, k2g, k3g, k4g, k5g, k6g, k7g;
     int k0b, k1b, k2b, k3b, k4b, k5b, k6b, k7b;
-    if (dim < 256)
+    if (dim < 128)
     {
         for (k = 0; k < 8; k += 1, kerRow += 8)
         {
