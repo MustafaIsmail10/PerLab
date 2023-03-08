@@ -4,7 +4,7 @@
 - Our convolution function managed to get the highest speedup in the submissions with a ratio of `3.1`.
 
 Team members:
-- Mustafa Ismail [@MustafaIsmail10] (https://www.github.com/MustafaIsmail10) 
-- Syed Osama Ahmad [@Amas0o] (https://www.github.com/Amas0o) 
-- M. Mahdi Khosravi [@mmk-1] (https://www.github.com/mmk-1)
+- Mustafa Ismail [@MustafaIsmail10](https://www.github.com/MustafaIsmail10) 
+- Syed Osama Ahmad [@Amas0o](https://www.github.com/Amas0o) 
+- M. Mahdi Khosravi [@mmk-1](https://www.github.com/mmk-1)
 
