@@ -9,17 +9,16 @@
  * Please fill in the following team_t struct
  */
 team_t team = {
-    "HOLA", /* Team Name */
+    "AYA", /* Team Name */
 
     "e246581",                              /* First student ID */
     "Moustafa Ismail Hamed Mohamed Ismail", /* First student name */
 
-    "e248923",                 /* Second student ID */
+    "e2489235",                /* Second student ID */
     "Mohammad Mahdi Khosravi", /* Second student name */
 
-    "", /* Third student ID */
-    ""  /* Third student Name */
-};
+    "e2492387", /* Third student ID */
+    "Syed Osama Ahmad"};
 
 /********************
  * CONVOLUTION KERNEL
@@ -51,201 +50,150 @@ void naive_conv(int dim, pixel *src, pixel *ker, unsigned *dst)
         }
 }
 
-/*
- * convolution - 1.8
- */
-char convolutionMustafa1_8_descr[] = "Convolution: Mustafa v1";
-void convolutionMustafa1_8(int dim, pixel *src, pixel *ker, unsigned *dst)
+char convolutionMustafaV6565_descr[] = "Convolution: Mustafa v6565";
+void convolutionMustafaV6565(int dim, pixel *src, pixel *ker, unsigned *dst)
 {
-
     int i, j, k;
-    for (i = 0; i < dim - 8 + 1; i++)
-        for (j = 0; j < dim - 8 + 1; j++)
+    int limit = dim - 7;
+    pixel *kerRow = ker;
+    int val = 0;
+    int k0r, k1r, k2r, k3r, k4r, k5r, k6r, k7r;
+    int k0g, k1g, k2g, k3g, k4g, k5g, k6g, k7g;
+    int k0b, k1b, k2b, k3b, k4b, k5b, k6b, k7b;
+    for (k = 0; k < 8; k += 1, kerRow += 8)
+    {
+
+        k0r = kerRow[0].red;
+        k0g = kerRow[0].green;
+        k0b = kerRow[0].blue;
+
+        k1r = kerRow[1].red;
+        k1g = kerRow[1].green;
+        k1b = kerRow[1].blue;
+
+        k2r = kerRow[2].red;
+        k2g = kerRow[2].green;
+        k2b = kerRow[2].blue;
+
+        k3r = kerRow[3].red;
+        k3g = kerRow[3].green;
+        k3b = kerRow[3].blue;
+
+        k4r = kerRow[4].red;
+        k4g = kerRow[4].green;
+        k4b = kerRow[4].blue;
+
+        k5r = kerRow[5].red;
+        k5g = kerRow[5].green;
+        k5b = kerRow[5].blue;
+
+        k6r = kerRow[6].red;
+        k6g = kerRow[6].green;
+        k6b = kerRow[6].blue;
+
+        k7r = kerRow[7].red;
+        k7g = kerRow[7].green;
+        k7b = kerRow[7].blue;
+
+        unsigned *dstL = dst;
+        pixel *elem = src + val;
+        for (i = k; i < limit + k; i += 1, dstL += dim)
         {
-            int sum = 0;
-            pixel *kerPixel = ker;
-            for (k = 0; k < 8; k++)
+            for (j = 0; j < limit; j++, elem++)
             {
-                pixel *srcPixel = src + RIDX((i + k), j, dim);
-
-                int redc0 = srcPixel->red * kerPixel->red;
-                int greenc0 = srcPixel->green * kerPixel->green;
-                int bluec0 = srcPixel->blue * kerPixel->blue;
-
-                kerPixel += 1;
-                srcPixel += 1;
-
-                int redc1 = srcPixel->red * kerPixel->red;
-                int greenc1 = srcPixel->green * kerPixel->green;
-                int bluec1 = srcPixel->blue * kerPixel->blue;
-
-                int sumc0 = redc0 + greenc0;
-                int sumc1 = redc1 + greenc1;
-                sum += sumc0 + bluec0;
-                sum += sumc1 + bluec1;
-
-                kerPixel += 1;
-                srcPixel += 1;
-
-                int redc2 = srcPixel->red * kerPixel->red;
-                int greenc2 = srcPixel->green * kerPixel->green;
-                int bluec2 = srcPixel->blue * kerPixel->blue;
-
-                kerPixel += 1;
-                srcPixel += 1;
-
-                int redc3 = srcPixel->red * kerPixel->red;
-                int greenc3 = srcPixel->green * kerPixel->green;
-                int bluec3 = srcPixel->blue * kerPixel->blue;
-
-                int sumc2 = redc2 + greenc2;
-                int sumc3 = redc3 + greenc3;
-
-                sum += sumc2 + bluec2;
-                sum += sumc3 + bluec3;
-
-                kerPixel += 1;
-                srcPixel += 1;
-
-                int redc4 = srcPixel->red * kerPixel->red;
-                int greenc4 = srcPixel->green * kerPixel->green;
-                int bluec4 = srcPixel->blue * kerPixel->blue;
-
-                kerPixel += 1;
-                srcPixel += 1;
-
-                int redc5 = srcPixel->red * kerPixel->red;
-                int greenc5 = srcPixel->green * kerPixel->green;
-                int bluec5 = srcPixel->blue * kerPixel->blue;
-
-                int sumc4 = redc4 + greenc4;
-                int sumc5 = redc5 + greenc5;
-                sum += sumc4 + bluec4;
-                sum += sumc5 + bluec5;
-
-                kerPixel += 1;
-                srcPixel += 1;
-
-                int redc6 = srcPixel->red * kerPixel->red;
-                int greenc6 = srcPixel->green * kerPixel->green;
-                int bluec6 = srcPixel->blue * kerPixel->blue;
-
-                kerPixel += 1;
-                srcPixel += 1;
-
-                int redc7 = srcPixel->red * kerPixel->red;
-                int greenc7 = srcPixel->green * kerPixel->green;
-                int bluec7 = srcPixel->blue * kerPixel->blue;
-
-                kerPixel += 1;
-
-                int sumc6 = redc6 + greenc6;
-                int sumc7 = redc7 + greenc7;
-
-                sum += sumc6 + bluec6;
-                sum += sumc7 + bluec7;
+                dstL[j] += (elem[0].red * k0r) + (elem[0].green * k0g) + (elem[0].blue * k0b) + (elem[1].red * k1r) + (elem[1].green * k1g) + (elem[1].blue * k1b) + (elem[2].red * k2r) + (elem[2].green * k2g) + (elem[2].blue * k2b) +
+                           (elem[3].red * k3r) + (elem[3].green * k3g) + (elem[3].blue * k3b) + (elem[4].red * k4r) + (elem[4].green * k4g) + (elem[4].blue * k4b) + (elem[5].red * k5r) + (elem[5].green * k5g) + (elem[5].blue * k5b) + (elem[6].red * k6r) + (elem[6].green * k6g) + (elem[6].blue * k6b) + (elem[7].red * k7r) + (elem[7].green * k7g) + (elem[7].blue * k7b);
             }
-            dst[RIDX(i, j, dim)] = sum;
+            elem += 7;
         }
+        val += dim;
+    }
 }
 
 /*
- * convolution - Mustafa v1
+ * convolution - Your current working version of convolution
+ * IMPORTANT: This is the version you will be graded on
  */
-char convolutionMustafaV1_descr[] = "Convolution: Mustafa v1";
-void convolutionMustafaV1(int dim, pixel *src, pixel *ker, unsigned *dst)
+char convolutionMustafaV6666_descr[] = "Convolution: Mustafa V6666";
+void convolutionMustafaV6666(int dim, pixel *src, pixel *ker, unsigned *dst)
 {
 
     int i, j, k;
     int limit = dim - 7;
-    for (i = 0; i < limit; i++)
-        for (j = 0; j < limit ; j++)
+    pixel *kerRow = ker;
+    int val = 0;
+    int k0r, k1r, k2r, k3r, k4r, k5r, k6r, k7r;
+    int k0g, k1g, k2g, k3g, k4g, k5g, k6g, k7g;
+    int k0b, k1b, k2b, k3b, k4b, k5b, k6b, k7b;
+    for (k = 0; k < 8; k += 1, kerRow += 8)
+    {
+
+        k0r = kerRow[0].red;
+        k0g = kerRow[0].green;
+        k0b = kerRow[0].blue;
+
+        k1r = kerRow[1].red;
+        k1g = kerRow[1].green;
+        k1b = kerRow[1].blue;
+
+        k2r = kerRow[2].red;
+        k2g = kerRow[2].green;
+        k2b = kerRow[2].blue;
+
+        k3r = kerRow[3].red;
+        k3g = kerRow[3].green;
+        k3b = kerRow[3].blue;
+
+        k4r = kerRow[4].red;
+        k4g = kerRow[4].green;
+        k4b = kerRow[4].blue;
+
+        k5r = kerRow[5].red;
+        k5g = kerRow[5].green;
+        k5b = kerRow[5].blue;
+
+        k6r = kerRow[6].red;
+        k6g = kerRow[6].green;
+        k6b = kerRow[6].blue;
+
+        k7r = kerRow[7].red;
+        k7g = kerRow[7].green;
+        k7b = kerRow[7].blue;
+
+        unsigned *dstL = dst;
+        pixel *elem = src + val;
+        for (i = k; i < limit + k; i += 1, dstL += dim)
         {
-            int sum = 0;
-            pixel *kerPixel = ker;
-            for (k = 0; k < 8; k++)
+            for (j = 0; j < limit; j += 8, elem += 8)
             {
-                pixel *srcPixel = src + RIDX((i + k), j, dim);
 
-                int redc0 = srcPixel->red * kerPixel->red;
-                int greenc0 = srcPixel->green * kerPixel->green;
-                int bluec0 = srcPixel->blue * kerPixel->blue;
+                dstL[j] += (elem[0].red * k0r) + (elem[0].green * k0g) + (elem[0].blue * k0b) + (elem[1].red * k1r) + (elem[1].green * k1g) + (elem[1].blue * k1b) + (elem[2].red * k2r) + (elem[2].green * k2g) + (elem[2].blue * k2b) +
+                           (elem[3].red * k3r) + (elem[3].green * k3g) + (elem[3].blue * k3b) + (elem[4].red * k4r) + (elem[4].green * k4g) + (elem[4].blue * k4b) + (elem[5].red * k5r) + (elem[5].green * k5g) + (elem[5].blue * k5b) + (elem[6].red * k6r) + (elem[6].green * k6g) + (elem[6].blue * k6b) + (elem[7].red * k7r) + (elem[7].green * k7g) + (elem[7].blue * k7b);
 
-                kerPixel += 1;
-                srcPixel += 1;
+                dstL[j + 1] += (elem[1].red * k0r) + (elem[1].green * k0g) + (elem[1].blue * k0b) + (elem[2].red * k1r) + (elem[2].green * k1g) + (elem[2].blue * k1b) + (elem[3].red * k2r) + (elem[3].green * k2g) + (elem[3].blue * k2b) +
+                               (elem[4].red * k3r) + (elem[4].green * k3g) + (elem[4].blue * k3b) + (elem[5].red * k4r) + (elem[5].green * k4g) + (elem[5].blue * k4b) + (elem[6].red * k5r) + (elem[6].green * k5g) + (elem[6].blue * k5b) + (elem[7].red * k6r) + (elem[7].green * k6g) + (elem[7].blue * k6b) + (elem[8].red * k7r) + (elem[8].green * k7g) + (elem[8].blue * k7b);
 
-                int redc1 = srcPixel->red * kerPixel->red;
-                int greenc1 = srcPixel->green * kerPixel->green;
-                int bluec1 = srcPixel->blue * kerPixel->blue;
+                dstL[j + 2] += (elem[2].red * k0r) + (elem[2].green * k0g) + (elem[2].blue * k0b) + (elem[3].red * k1r) + (elem[3].green * k1g) + (elem[3].blue * k1b) + (elem[4].red * k2r) + (elem[4].green * k2g) + (elem[4].blue * k2b) +
+                               (elem[5].red * k3r) + (elem[5].green * k3g) + (elem[5].blue * k3b) + (elem[6].red * k4r) + (elem[6].green * k4g) + (elem[6].blue * k4b) + (elem[7].red * k5r) + (elem[7].green * k5g) + (elem[7].blue * k5b) + (elem[8].red * k6r) + (elem[8].green * k6g) + (elem[8].blue * k6b) + (elem[9].red * k7r) + (elem[9].green * k7g) + (elem[9].blue * k7b);
 
-                int sumc0 = redc0 + greenc0;
-                int sumc1 = redc1 + greenc1;
-                sum += sumc0 + bluec0;
-                sum += sumc1 + bluec1;
+                dstL[j + 3] += (elem[3].red * k0r) + (elem[3].green * k0g) + (elem[3].blue * k0b) + (elem[4].red * k1r) + (elem[4].green * k1g) + (elem[4].blue * k1b) + (elem[5].red * k2r) + (elem[5].green * k2g) + (elem[5].blue * k2b) +
+                               (elem[6].red * k3r) + (elem[6].green * k3g) + (elem[6].blue * k3b) + (elem[7].red * k4r) + (elem[7].green * k4g) + (elem[7].blue * k4b) + (elem[8].red * k5r) + (elem[8].green * k5g) + (elem[8].blue * k5b) + (elem[9].red * k6r) + (elem[9].green * k6g) + (elem[9].blue * k6b) + (elem[10].red * k7r) + (elem[10].green * k7g) + (elem[10].blue * k7b);
 
-                kerPixel += 1;
-                srcPixel += 1;
+                dstL[j + 4] += (elem[4].red * k0r) + (elem[4].green * k0g) + (elem[4].blue * k0b) + (elem[5].red * k1r) + (elem[5].green * k1g) + (elem[5].blue * k1b) + (elem[6].red * k2r) + (elem[6].green * k2g) + (elem[6].blue * k2b) +
+                               (elem[7].red * k3r) + (elem[7].green * k3g) + (elem[7].blue * k3b) + (elem[8].red * k4r) + (elem[8].green * k4g) + (elem[8].blue * k4b) + (elem[9].red * k5r) + (elem[9].green * k5g) + (elem[9].blue * k5b) + (elem[10].red * k6r) + (elem[10].green * k6g) + (elem[10].blue * k6b) + (elem[11].red * k7r) + (elem[11].green * k7g) + (elem[11].blue * k7b);
 
-                int redc2 = srcPixel->red * kerPixel->red;
-                int greenc2 = srcPixel->green * kerPixel->green;
-                int bluec2 = srcPixel->blue * kerPixel->blue;
+                dstL[j + 5] += (elem[5].red * k0r) + (elem[5].green * k0g) + (elem[5].blue * k0b) + (elem[6].red * k1r) + (elem[6].green * k1g) + (elem[6].blue * k1b) + (elem[7].red * k2r) + (elem[7].green * k2g) + (elem[7].blue * k2b) +
+                               (elem[8].red * k3r) + (elem[8].green * k3g) + (elem[8].blue * k3b) + (elem[9].red * k4r) + (elem[9].green * k4g) + (elem[9].blue * k4b) + (elem[10].red * k5r) + (elem[10].green * k5g) + (elem[10].blue * k5b) + (elem[11].red * k6r) + (elem[11].green * k6g) + (elem[11].blue * k6b) + (elem[12].red * k7r) + (elem[12].green * k7g) + (elem[12].blue * k7b);
 
-                kerPixel += 1;
-                srcPixel += 1;
+                dstL[j + 6] += (elem[6].red * k0r) + (elem[6].green * k0g) + (elem[6].blue * k0b) + (elem[7].red * k1r) + (elem[7].green * k1g) + (elem[7].blue * k1b) + (elem[8].red * k2r) + (elem[8].green * k2g) + (elem[8].blue * k2b) +
+                               (elem[9].red * k3r) + (elem[9].green * k3g) + (elem[9].blue * k3b) + (elem[10].red * k4r) + (elem[10].green * k4g) + (elem[10].blue * k4b) + (elem[11].red * k5r) + (elem[11].green * k5g) + (elem[11].blue * k5b) + (elem[12].red * k6r) + (elem[12].green * k6g) + (elem[12].blue * k6b) + (elem[13].red * k7r) + (elem[13].green * k7g) + (elem[13].blue * k7b);
 
-                int redc3 = srcPixel->red * kerPixel->red;
-                int greenc3 = srcPixel->green * kerPixel->green;
-                int bluec3 = srcPixel->blue * kerPixel->blue;
-
-                int sumc2 = redc2 + greenc2;
-                int sumc3 = redc3 + greenc3;
-
-                sum += sumc2 + bluec2;
-                sum += sumc3 + bluec3;
-
-                kerPixel += 1;
-                srcPixel += 1;
-
-                int redc4 = srcPixel->red * kerPixel->red;
-                int greenc4 = srcPixel->green * kerPixel->green;
-                int bluec4 = srcPixel->blue * kerPixel->blue;
-
-                kerPixel += 1;
-                srcPixel += 1;
-
-                int redc5 = srcPixel->red * kerPixel->red;
-                int greenc5 = srcPixel->green * kerPixel->green;
-                int bluec5 = srcPixel->blue * kerPixel->blue;
-
-                int sumc4 = redc4 + greenc4;
-                int sumc5 = redc5 + greenc5;
-                sum += sumc4 + bluec4;
-                sum += sumc5 + bluec5;
-
-                kerPixel += 1;
-                srcPixel += 1;
-
-                int redc6 = srcPixel->red * kerPixel->red;
-                int greenc6 = srcPixel->green * kerPixel->green;
-                int bluec6 = srcPixel->blue * kerPixel->blue;
-
-                kerPixel += 1;
-                srcPixel += 1;
-
-                int redc7 = srcPixel->red * kerPixel->red;
-                int greenc7 = srcPixel->green * kerPixel->green;
-                int bluec7 = srcPixel->blue * kerPixel->blue;
-
-                kerPixel += 1;
-
-                int sumc6 = redc6 + greenc6;
-                int sumc7 = redc7 + greenc7;
-
-                sum += sumc6 + bluec6;
-                sum += sumc7 + bluec7;
+                dstL[j + 7] += (elem[7].red * k0r) + (elem[7].green * k0g) + (elem[7].blue * k0b) + (elem[8].red * k1r) + (elem[8].green * k1g) + (elem[8].blue * k1b) + (elem[9].red * k2r) + (elem[9].green * k2g) + (elem[9].blue * k2b) +
+                               (elem[10].red * k3r) + (elem[10].green * k3g) + (elem[10].blue * k3b) + (elem[11].red * k4r) + (elem[11].green * k4g) + (elem[11].blue * k4b) + (elem[12].red * k5r) + (elem[12].green * k5g) + (elem[12].blue * k5b) + (elem[13].red * k6r) + (elem[13].green * k6g) + (elem[13].blue * k6b) + (elem[14].red * k7r) + (elem[14].green * k7g) + (elem[14].blue * k7b);
             }
-            dst[RIDX(i, j, dim)] = sum;
         }
+        val += dim;
+    }
 }
 
 /*
@@ -255,96 +203,136 @@ void convolutionMustafaV1(int dim, pixel *src, pixel *ker, unsigned *dst)
 char convolution_descr[] = "Convolution: Current working version";
 void convolution(int dim, pixel *src, pixel *ker, unsigned *dst)
 {
-
     int i, j, k;
-    for (i = 0; i < dim - 8 + 1; i++)
-        for (j = 0; j < dim - 8 + 1; j++)
+    int limit = dim - 7;
+    pixel *kerRow = ker;
+    int val = 0;
+    int k0r, k1r, k2r, k3r, k4r, k5r, k6r, k7r;
+    int k0g, k1g, k2g, k3g, k4g, k5g, k6g, k7g;
+    int k0b, k1b, k2b, k3b, k4b, k5b, k6b, k7b;
+    if (dim <= 256)
+    {
+        for (k = 0; k < 8; k += 1, kerRow += 8)
         {
-            int sum = 0;
-            pixel *kerPixel = ker;
-            for (k = 0; k < 8; k++)
+
+            k0r = kerRow[0].red;
+            k0g = kerRow[0].green;
+            k0b = kerRow[0].blue;
+
+            k1r = kerRow[1].red;
+            k1g = kerRow[1].green;
+            k1b = kerRow[1].blue;
+
+            k2r = kerRow[2].red;
+            k2g = kerRow[2].green;
+            k2b = kerRow[2].blue;
+
+            k3r = kerRow[3].red;
+            k3g = kerRow[3].green;
+            k3b = kerRow[3].blue;
+
+            k4r = kerRow[4].red;
+            k4g = kerRow[4].green;
+            k4b = kerRow[4].blue;
+
+            k5r = kerRow[5].red;
+            k5g = kerRow[5].green;
+            k5b = kerRow[5].blue;
+
+            k6r = kerRow[6].red;
+            k6g = kerRow[6].green;
+            k6b = kerRow[6].blue;
+
+            k7r = kerRow[7].red;
+            k7g = kerRow[7].green;
+            k7b = kerRow[7].blue;
+
+            unsigned *dstL = dst;
+            pixel *elem = src + val;
+            for (i = k; i < limit + k; i += 1, dstL += dim)
             {
-                pixel *srcPixel = src + RIDX((i + k), j, dim);
-
-                int redc0 = srcPixel->red * kerPixel->red;
-                int greenc0 = srcPixel->green * kerPixel->green;
-                int bluec0 = srcPixel->blue * kerPixel->blue;
-
-                kerPixel += 1;
-                srcPixel += 1;
-
-                int redc1 = srcPixel->red * kerPixel->red;
-                int greenc1 = srcPixel->green * kerPixel->green;
-                int bluec1 = srcPixel->blue * kerPixel->blue;
-
-                int sumc0 = redc0 + greenc0;
-                int sumc1 = redc1 + greenc1;
-                sum += sumc0 + bluec0;
-                sum += sumc1 + bluec1;
-
-                kerPixel += 1;
-                srcPixel += 1;
-
-                int redc2 = srcPixel->red * kerPixel->red;
-                int greenc2 = srcPixel->green * kerPixel->green;
-                int bluec2 = srcPixel->blue * kerPixel->blue;
-
-                kerPixel += 1;
-                srcPixel += 1;
-
-                int redc3 = srcPixel->red * kerPixel->red;
-                int greenc3 = srcPixel->green * kerPixel->green;
-                int bluec3 = srcPixel->blue * kerPixel->blue;
-
-                int sumc2 = redc2 + greenc2;
-                int sumc3 = redc3 + greenc3;
-
-                sum += sumc2 + bluec2;
-                sum += sumc3 + bluec3;
-
-                kerPixel += 1;
-                srcPixel += 1;
-
-                int redc4 = srcPixel->red * kerPixel->red;
-                int greenc4 = srcPixel->green * kerPixel->green;
-                int bluec4 = srcPixel->blue * kerPixel->blue;
-
-                kerPixel += 1;
-                srcPixel += 1;
-
-                int redc5 = srcPixel->red * kerPixel->red;
-                int greenc5 = srcPixel->green * kerPixel->green;
-                int bluec5 = srcPixel->blue * kerPixel->blue;
-
-                int sumc4 = redc4 + greenc4;
-                int sumc5 = redc5 + greenc5;
-                sum += sumc4 + bluec4;
-                sum += sumc5 + bluec5;
-
-                kerPixel += 1;
-                srcPixel += 1;
-
-                int redc6 = srcPixel->red * kerPixel->red;
-                int greenc6 = srcPixel->green * kerPixel->green;
-                int bluec6 = srcPixel->blue * kerPixel->blue;
-
-                kerPixel += 1;
-                srcPixel += 1;
-
-                int redc7 = srcPixel->red * kerPixel->red;
-                int greenc7 = srcPixel->green * kerPixel->green;
-                int bluec7 = srcPixel->blue * kerPixel->blue;
-
-                kerPixel += 1;
-
-                int sumc6 = redc6 + greenc6;
-                int sumc7 = redc7 + greenc7;
-
-                sum += sumc6 + bluec6;
-                sum += sumc7 + bluec7;
+                for (j = 0; j < limit; j += 1, elem++)
+                {
+                    dstL[j] += (elem[0].red * k0r) + (elem[0].green * k0g) + (elem[0].blue * k0b) + (elem[1].red * k1r) + (elem[1].green * k1g) + (elem[1].blue * k1b) + (elem[2].red * k2r) + (elem[2].green * k2g) + (elem[2].blue * k2b) +
+                               (elem[3].red * k3r) + (elem[3].green * k3g) + (elem[3].blue * k3b) + (elem[4].red * k4r) + (elem[4].green * k4g) + (elem[4].blue * k4b) + (elem[5].red * k5r) + (elem[5].green * k5g) + (elem[5].blue * k5b) + (elem[6].red * k6r) + (elem[6].green * k6g) + (elem[6].blue * k6b) + (elem[7].red * k7r) + (elem[7].green * k7g) + (elem[7].blue * k7b);
+                }
+                elem += 7;
             }
-            dst[RIDX(i, j, dim)] = sum;
+            val += dim;
         }
+    }
+    else
+    {
+        for (k = 0; k < 8; k += 1, kerRow += 8)
+        {
+
+            k0r = kerRow[0].red;
+            k0g = kerRow[0].green;
+            k0b = kerRow[0].blue;
+
+            k1r = kerRow[1].red;
+            k1g = kerRow[1].green;
+            k1b = kerRow[1].blue;
+
+            k2r = kerRow[2].red;
+            k2g = kerRow[2].green;
+            k2b = kerRow[2].blue;
+
+            k3r = kerRow[3].red;
+            k3g = kerRow[3].green;
+            k3b = kerRow[3].blue;
+
+            k4r = kerRow[4].red;
+            k4g = kerRow[4].green;
+            k4b = kerRow[4].blue;
+
+            k5r = kerRow[5].red;
+            k5g = kerRow[5].green;
+            k5b = kerRow[5].blue;
+
+            k6r = kerRow[6].red;
+            k6g = kerRow[6].green;
+            k6b = kerRow[6].blue;
+
+            k7r = kerRow[7].red;
+            k7g = kerRow[7].green;
+            k7b = kerRow[7].blue;
+
+            unsigned *dstL = dst;
+            pixel *elem = src + val;
+            for (i = k; i < limit + k; i += 1, dstL += dim)
+            {
+                for (j = 0; j < limit; j += 8, elem += 8)
+                {
+
+                    dstL[j] += (elem[0].red * k0r) + (elem[0].green * k0g) + (elem[0].blue * k0b) + (elem[1].red * k1r) + (elem[1].green * k1g) + (elem[1].blue * k1b) + (elem[2].red * k2r) + (elem[2].green * k2g) + (elem[2].blue * k2b) +
+                               (elem[3].red * k3r) + (elem[3].green * k3g) + (elem[3].blue * k3b) + (elem[4].red * k4r) + (elem[4].green * k4g) + (elem[4].blue * k4b) + (elem[5].red * k5r) + (elem[5].green * k5g) + (elem[5].blue * k5b) + (elem[6].red * k6r) + (elem[6].green * k6g) + (elem[6].blue * k6b) + (elem[7].red * k7r) + (elem[7].green * k7g) + (elem[7].blue * k7b);
+
+                    dstL[j + 1] += (elem[1].red * k0r) + (elem[1].green * k0g) + (elem[1].blue * k0b) + (elem[2].red * k1r) + (elem[2].green * k1g) + (elem[2].blue * k1b) + (elem[3].red * k2r) + (elem[3].green * k2g) + (elem[3].blue * k2b) +
+                                   (elem[4].red * k3r) + (elem[4].green * k3g) + (elem[4].blue * k3b) + (elem[5].red * k4r) + (elem[5].green * k4g) + (elem[5].blue * k4b) + (elem[6].red * k5r) + (elem[6].green * k5g) + (elem[6].blue * k5b) + (elem[7].red * k6r) + (elem[7].green * k6g) + (elem[7].blue * k6b) + (elem[8].red * k7r) + (elem[8].green * k7g) + (elem[8].blue * k7b);
+
+                    dstL[j + 2] += (elem[2].red * k0r) + (elem[2].green * k0g) + (elem[2].blue * k0b) + (elem[3].red * k1r) + (elem[3].green * k1g) + (elem[3].blue * k1b) + (elem[4].red * k2r) + (elem[4].green * k2g) + (elem[4].blue * k2b) +
+                                   (elem[5].red * k3r) + (elem[5].green * k3g) + (elem[5].blue * k3b) + (elem[6].red * k4r) + (elem[6].green * k4g) + (elem[6].blue * k4b) + (elem[7].red * k5r) + (elem[7].green * k5g) + (elem[7].blue * k5b) + (elem[8].red * k6r) + (elem[8].green * k6g) + (elem[8].blue * k6b) + (elem[9].red * k7r) + (elem[9].green * k7g) + (elem[9].blue * k7b);
+
+                    dstL[j + 3] += (elem[3].red * k0r) + (elem[3].green * k0g) + (elem[3].blue * k0b) + (elem[4].red * k1r) + (elem[4].green * k1g) + (elem[4].blue * k1b) + (elem[5].red * k2r) + (elem[5].green * k2g) + (elem[5].blue * k2b) +
+                                   (elem[6].red * k3r) + (elem[6].green * k3g) + (elem[6].blue * k3b) + (elem[7].red * k4r) + (elem[7].green * k4g) + (elem[7].blue * k4b) + (elem[8].red * k5r) + (elem[8].green * k5g) + (elem[8].blue * k5b) + (elem[9].red * k6r) + (elem[9].green * k6g) + (elem[9].blue * k6b) + (elem[10].red * k7r) + (elem[10].green * k7g) + (elem[10].blue * k7b);
+
+                    dstL[j + 4] += (elem[4].red * k0r) + (elem[4].green * k0g) + (elem[4].blue * k0b) + (elem[5].red * k1r) + (elem[5].green * k1g) + (elem[5].blue * k1b) + (elem[6].red * k2r) + (elem[6].green * k2g) + (elem[6].blue * k2b) +
+                                   (elem[7].red * k3r) + (elem[7].green * k3g) + (elem[7].blue * k3b) + (elem[8].red * k4r) + (elem[8].green * k4g) + (elem[8].blue * k4b) + (elem[9].red * k5r) + (elem[9].green * k5g) + (elem[9].blue * k5b) + (elem[10].red * k6r) + (elem[10].green * k6g) + (elem[10].blue * k6b) + (elem[11].red * k7r) + (elem[11].green * k7g) + (elem[11].blue * k7b);
+
+                    dstL[j + 5] += (elem[5].red * k0r) + (elem[5].green * k0g) + (elem[5].blue * k0b) + (elem[6].red * k1r) + (elem[6].green * k1g) + (elem[6].blue * k1b) + (elem[7].red * k2r) + (elem[7].green * k2g) + (elem[7].blue * k2b) +
+                                   (elem[8].red * k3r) + (elem[8].green * k3g) + (elem[8].blue * k3b) + (elem[9].red * k4r) + (elem[9].green * k4g) + (elem[9].blue * k4b) + (elem[10].red * k5r) + (elem[10].green * k5g) + (elem[10].blue * k5b) + (elem[11].red * k6r) + (elem[11].green * k6g) + (elem[11].blue * k6b) + (elem[12].red * k7r) + (elem[12].green * k7g) + (elem[12].blue * k7b);
+
+                    dstL[j + 6] += (elem[6].red * k0r) + (elem[6].green * k0g) + (elem[6].blue * k0b) + (elem[7].red * k1r) + (elem[7].green * k1g) + (elem[7].blue * k1b) + (elem[8].red * k2r) + (elem[8].green * k2g) + (elem[8].blue * k2b) +
+                                   (elem[9].red * k3r) + (elem[9].green * k3g) + (elem[9].blue * k3b) + (elem[10].red * k4r) + (elem[10].green * k4g) + (elem[10].blue * k4b) + (elem[11].red * k5r) + (elem[11].green * k5g) + (elem[11].blue * k5b) + (elem[12].red * k6r) + (elem[12].green * k6g) + (elem[12].blue * k6b) + (elem[13].red * k7r) + (elem[13].green * k7g) + (elem[13].blue * k7b);
+
+                    dstL[j + 7] += (elem[7].red * k0r) + (elem[7].green * k0g) + (elem[7].blue * k0b) + (elem[8].red * k1r) + (elem[8].green * k1g) + (elem[8].blue * k1b) + (elem[9].red * k2r) + (elem[9].green * k2g) + (elem[9].blue * k2b) +
+                                   (elem[10].red * k3r) + (elem[10].green * k3g) + (elem[10].blue * k3b) + (elem[11].red * k4r) + (elem[11].green * k4g) + (elem[11].blue * k4b) + (elem[12].red * k5r) + (elem[12].green * k5g) + (elem[12].blue * k5b) + (elem[13].red * k6r) + (elem[13].green * k6g) + (elem[13].blue * k6b) + (elem[14].red * k7r) + (elem[14].green * k7g) + (elem[14].blue * k7b);
+                }
+            }
+            val += dim;
+        }
+    }
 }
 
 /*********************************************************************
@@ -358,8 +346,10 @@ void convolution(int dim, pixel *src, pixel *ker, unsigned *dst)
 void register_conv_functions()
 {
     add_conv_function(&naive_conv, naive_conv_descr);
-    add_conv_function(&convolutionMustafaV1, convolutionMustafaV1_descr);
     add_conv_function(&convolution, convolution_descr);
+    add_conv_function(&convolutionMustafaV6565, convolutionMustafaV6565_descr);
+    add_conv_function(&convolutionMustafaV6666, convolutionMustafaV6666_descr);
+
     /* ... Register additional test functions here */
 }
 
@@ -400,77 +390,15 @@ void naive_average_pooling(int dim, pixel *src, pixel *dst)
         }
 }
 
-/*
- * average_pooling - Your current working version of average_pooling
- * IMPORTANT: This is the version you will be graded on
- */
-char average_pooling_descr[] = "Average Pooling: Current working version";
-void average_pooling(int dim, pixel *src, pixel *dst)
-{
-
-    // Version 2 is the one that works.
-    avg_pool_mahdi_v2(dim,src,dst);
-}
-
-char avg_pool_mahdi_descr[] = "avg pooling function mahdi";
-void avg_pool_mahdi(int dim, pixel *src, pixel *dst)
-{
-    int i, j;
-    int limit = dim / 2;
-
-
-    for (i = 0; i < limit; i++)
-        for (j = 0; j < limit; j++)
-        {
-            pixel * dstPixel = dst + RIDX(i, j, limit);
-            // pixel * srcPixel = src[RIDX(i * 2 + k, j * 2 + l, dim)];
-            pixel * srcPixel = src + RIDX(i * 2, j * 2, dim);
-
-            // 0,0
-            int sumR0 = srcPixel->red;
-            int sumG0 = srcPixel->green;
-            int sumB0 = srcPixel->blue;
-
-            // 0,1
-            srcPixel = src + RIDX(i * 2, j * 2 + 1, dim);
-
-            int sumR1 = srcPixel->red;
-            int sumG1 = srcPixel->green;
-            int sumB1 = srcPixel->blue;
-
-            // 1,0
-            srcPixel = src + RIDX(i * 2 + 1, j * 2, dim);
-
-            int sumR2 = srcPixel->red;
-            int sumG2 = srcPixel->green;
-            int sumB2 = srcPixel->blue;
-
-            // 1,1
-            srcPixel = src + RIDX(i * 2 + 1, j * 2 + 1, dim);
-
-            int sumR3 = srcPixel->red;
-            int sumG3 = srcPixel->green;
-            int sumB3 = srcPixel->blue;
-
-            dstPixel->red = (sumR0 + sumR1) + (sumR2 + sumR3);
-            dstPixel->green = (sumG0 + sumG1) + (sumG2 + sumG3);
-            dstPixel->blue = (sumB0 + sumB1) + (sumB2 + sumB3);
-
-            dstPixel->red >>= 2;
-            dstPixel->green >>= 2;
-            dstPixel->blue >>= 2;
-        }
-}
-
 char avg_pool_mahdi_v2_descr[] = "avg pooling function mahdi v2";
 void avg_pool_mahdi_v2(int dim, pixel *src, pixel *dst)
 {
     int i, j;
     int limit = dim / 2;
 
-    pixel * row1;
-    pixel * row2;
-    pixel * dstPixel;
+    pixel *row1;
+    pixel *row2;
+    pixel *dstPixel;
 
     for (i = 0; i < limit; i++)
         for (j = 0; j < limit; j++)
@@ -493,7 +421,7 @@ void avg_pool_mahdi_v2(int dim, pixel *src, pixel *dst)
             int sumB1 = row1->blue;
 
             // 1,0
-            //srcPixel = src + RIDX(i * 2 + 1, j * 2, dim);
+            // srcPixel = src + RIDX(i * 2 + 1, j * 2, dim);
 
             int sumR2 = row2->red;
             int sumG2 = row2->green;
@@ -517,26 +445,30 @@ void avg_pool_mahdi_v2(int dim, pixel *src, pixel *dst)
         }
 }
 
-char avg_pool_mahdi_v3_descr[] = "avg pooling function mahdi v3";
-void avg_pool_mahdi_v3(int dim, pixel *src, pixel *dst)
+/*
+ * average_pooling - Your current working version of average_pooling
+ * IMPORTANT: This is the version you will be graded on
+ */
+char average_pooling_descr[] = "Average Pooling: Current working version";
+void average_pooling(int dim, pixel *src, pixel *dst)
 {
+
+    // naive_average_pooling(dim,src,dst);
+    // avg_pool_mahdi_v2(dim, src, dst);
+
     int i, j;
     int limit = dim / 2;
 
-    pixel * row1;
-    pixel * row2;
+    pixel *row1;
+    pixel *row2;
+    pixel *dstPixel;
 
-    for (i = 0; i < limit; i+=2)
+    for (i = 0; i < limit; i++)
         for (j = 0; j < limit; j++)
         {
-            pixel * dstPixel = dst + RIDX(i, j, limit);
-            // pixel * srcPixel = src[RIDX(i * 2 + k, j * 2 + l, dim)];
-            // pixel * srcPixel = src + RIDX(i * 2, j * 2, dim);
-            pixel * row1 = src + RIDX(i * 2, j * 2, dim);
-            pixel * row2 = src + RIDX(i * 2 + 1, j * 2, dim);
-
-            pixel * row1_b = src + RIDX((i+1) * 2, j * 2, dim);
-            pixel * row2_b = src + RIDX((i+1) * 2 + 1, j * 2, dim);
+            dstPixel = dst + RIDX(i, j, limit);
+            row1 = src + RIDX(i * 2, j * 2, dim);
+            row2 = src + RIDX(i * 2 + 1, j * 2, dim);
 
             // 0,0
             int sumR0 = row1->red;
@@ -552,7 +484,7 @@ void avg_pool_mahdi_v3(int dim, pixel *src, pixel *dst)
             int sumB1 = row1->blue;
 
             // 1,0
-            //srcPixel = src + RIDX(i * 2 + 1, j * 2, dim);
+            // srcPixel = src + RIDX(i * 2 + 1, j * 2, dim);
 
             int sumR2 = row2->red;
             int sumG2 = row2->green;
@@ -573,46 +505,9 @@ void avg_pool_mahdi_v3(int dim, pixel *src, pixel *dst)
             dstPixel->red >>= 2;
             dstPixel->green >>= 2;
             dstPixel->blue >>= 2;
-
-
-
-            // 0,0
-            int sumR0_b = row1_b->red;
-            int sumG0_b = row1_b->green;
-            int sumB0_b = row1_b->blue;
-
-            // 0,1
-            // srcPixel = src + RIDX(i * 2, j * 2 + 1, dim);
-            row1_b++;
-
-            int sumR1_b = row1_b->red;
-            int sumG1_b = row1_b->green;
-            int sumB1_b = row1_b->blue;
-
-            // 1,0
-            //srcPixel = src + RIDX(i * 2 + 1, j * 2, dim);
-
-            int sumR2_b = row2_b->red;
-            int sumG2_b = row2_b->green;
-            int sumB2_b = row2_b->blue;
-
-            // 1,1
-            // srcPixel = src + RIDX(i * 2 + 1, j * 2 + 1, dim);
-            row2_b++;
-
-            int sumR3_b = row2_b->red;
-            int sumG3_b = row2_b->green;
-            int sumB3_b = row2_b->blue;
-
-            dstPixel->red = (sumR0_b + sumR1_b) + (sumR2_b + sumR3_b);
-            dstPixel->green = (sumG0_b + sumG1_b) + (sumG2_b + sumG3_b);
-            dstPixel->blue = (sumB0_b + sumB1_b) + (sumB2_b + sumB3_b);
-
-            dstPixel->red >>= 2;
-            dstPixel->green >>= 2;
-            dstPixel->blue >>= 2;
         }
 }
+
 /******************************************************************************
  * register_average_pooling_functions - Register all of your different versions
  *     of the average pooling  with the driver by calling the
@@ -624,10 +519,7 @@ void avg_pool_mahdi_v3(int dim, pixel *src, pixel *dst)
 void register_average_pooling_functions()
 {
     add_average_pooling_function(&naive_average_pooling, naive_average_pooling_descr);
-    // add_average_pooling_function(&average_pooling, average_pooling_descr);
-    add_average_pooling_function(&avg_pool_mahdi, avg_pool_mahdi_descr);
+    add_average_pooling_function(&average_pooling, average_pooling_descr);
     add_average_pooling_function(&avg_pool_mahdi_v2, avg_pool_mahdi_v2_descr);
-    // v3 isexperimental
-    add_average_pooling_function(&avg_pool_mahdi_v3, avg_pool_mahdi_v3_descr);
     /* ... Register additional test functions here */
 }
